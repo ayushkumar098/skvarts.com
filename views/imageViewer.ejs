@@ -1,0 +1,20 @@
+<%- include("partials/header", {title: title }); -%>
+
+<section class="viewer">
+    <div class="view-img-contents">
+        <div class="img-view">
+            <img src="data:image/<%=image.img.contentType%>;base64,
+                     <%=image.img.data.toString('base64')%>">
+        </div>
+        <div class="img-desc">
+            <h1 class="view-img-name"><%= image.name %></h1>
+            <h2 class="view-img-price">C$ <%= image.price %></h2>
+            <p><%= image.desc %></p>
+        </div>
+    </div>
+    <div class="img-cart">
+        <a href="/order"><h3>PLACE AN ORDER</h3></a>
+    </div>
+</section>
+
+<%- include('partials/footer'); -%>

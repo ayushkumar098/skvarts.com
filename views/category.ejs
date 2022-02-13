@@ -1,0 +1,53 @@
+<%- include("partials/header", {title: title }); -%>
+    <div class="container">
+        <div class="heading">
+            <h3><span id="title">art </span><span id="subtitle">GALLERY</span></h3>
+        </div>
+
+        <div class="catogeries">
+            <div class="catogry" id="L">
+                <div class="img-box">
+                    <img src="images/102.jpg">
+                </div>
+                <div class="cat-des">
+                    <h3>OIL PAINTING</h3>
+                </div>
+            </div>
+
+            <div class="catogry" id="R">
+                <div class="img-box">
+                    <img src="images/103.jpg">
+                </div>
+                <div class="cat-des ">
+                    <h3>COLOR PENCIL</h3>
+                </div>
+            </div>
+
+            <div id="L2">
+                <div class="img-box">
+                    <img src="images/graphiteCover.jpeg">
+                </div>
+                <div class="cat-des">
+                    <h3>GRAPHITE & CHARCOAL</h3>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var cat = document.querySelectorAll('.catogry');
+        var cat1 = document.querySelector('#L2');
+        cat[0].addEventListener("click", () => {
+            // console.log(cat[0].innerHTML);
+            window.location.href = "/gallerys/oil";
+        })
+        cat[1].addEventListener("click", () => {
+            // console.log(cat[1].innerHTML);
+            window.location.href = "/gallerys/color";
+        })
+        cat1.addEventListener("click", () => {
+            // console.log(cat1.innerHTML);
+            window.location.href = "/gallerys/graphite";
+        })
+    </script>
+<%- include('partials/footer'); -%>
