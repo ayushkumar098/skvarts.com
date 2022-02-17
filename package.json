@@ -19,5 +19,14 @@
     "nodemailer": "^6.7.2",
     "package.json": "^2.0.1",
     "path": "^0.12.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayushkumar098/skvarts.com.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/ayushkumar098/skvarts.com/issues"
+  },
+  "homepage": "https://github.com/ayushkumar098/skvarts.com#readme"
 }
