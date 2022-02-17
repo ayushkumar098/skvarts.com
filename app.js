@@ -13,7 +13,7 @@ dotenv.config()
 const app = express();
 app.set("view engine", "ejs");
 
-const gallerys = [{ title: "oil",subtitle: "painting" },{title: "color",subtitle: "Pencil" },{title: "graphite",subtitle: "& Charcoal"}];
+const gallerys = [{ title: "oil",subtitle: "PAINTING" },{title: "color",subtitle: "PENCIL" },{title: "graphite",subtitle: "& CHARCOAL"}];
 
 mongoose.connect("mongodb://localhost:27017/imageDB", {
   useNewUrlParser: true,
@@ -209,6 +209,6 @@ app.get("/error",function(req,res){
 // })
 
 
-app.listen(process.env.PORT, function(){
+app.listen(process.env.PORT || 3000, function(){
     console.log("Server started on port " + process.env.PORT);
 })

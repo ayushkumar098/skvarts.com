@@ -19,6 +19,34 @@
     src: local('roxborough'), url('../fonts/FontsFree-Net-roxborough-cf-light.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'glacial-indifference';
+    font-style: normal;
+    font-weight: normal;
+    src: local('glacial-indifference'), url('../fonts/GlacialIndifference-Regular.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'glacial-indifference';
+    font-style: normal;
+    font-weight: bold;
+    src: local('glacial-indifference'), url('../fonts/GlacialIndifference-Bold.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'mistrully';
+    font-style: normal;
+    font-weight: normal;
+    src: local('mistrully'), url('../fonts/Mistrully.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'PlaylistScript';
+    font-style: normal;
+    font-weight: normal;
+    src: local('PlaylistScript'), url('../fonts/FontsFree-Net-PlaylistScript.ttf');
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
 
@@ -418,7 +446,7 @@ h3{
 
 /*------------About us Page--------------*/
 .aboutPage{
-    height: 90vh;
+    height: 100%;
     width: 100%;
     background: linear-gradient(to right, #ffffff, #ebe7e7);
     /* background-color: rgba(0, 0, 0, 0.747); */
@@ -429,16 +457,17 @@ h3{
     align-items: center;
 }
 .aboutContent h1{
-    font-family: "roxborough";
+    font-family: "mistrully";
     color: #f44336;
-    font-size: 2.5em;
+    font-size: 3.5em;
+    font-weight: bold;
     margin-bottom: 12px;
 }
 .aboutContent p{
     /* color: white; */
     font-size: 1.5em;
-    font-weight: 700;
-    font-family: "Emberly";
+    font-weight: medium;
+    font-family: "glacial-indifference";
 }
 .profilePicture{
     margin: 0 10rem 0 0;
@@ -461,6 +490,9 @@ h3{
         flex-direction: column;
         justify-content: center;
     }
+    .aboutContent h1{
+        font-size: 3em;
+    }
     .profilePicture{
         margin: 0 0 3rem 0;
     }
@@ -476,6 +508,9 @@ h3{
     .about{
         padding: 2rem 2rem;
     }
+    .aboutContent h1{
+        font-size: 2.5em;
+    }
     .profilePicture{
         margin: 0 0 2rem 0;
     }
@@ -485,11 +520,17 @@ h3{
     }
     
 }
-/* @media only screen and (max-width: 365px){
+@media only screen and (max-width: 365px){
     .profilePicture{
         margin: 0 0 1rem 0;
     }
-} */
+    .aboutContent h1{
+        font-size: 2.2em;
+    }
+    .aboutContent p{
+        font-size: 1em;
+    }
+}
 
 
 
@@ -531,12 +572,14 @@ h3{
     font-size: 3em;
     font-weight: 600;
     font-family: 'roxborough';
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .container .heading #title{
     font-size: 7em;
-    font-family: 'Great Vibes', cursive;
+    font-weight: 500;
+    font-family: 'PlaylistScript';
+
 }
 
 
@@ -731,6 +774,8 @@ h3{
 .cat-des h3{
     font-size: 5rem;
     color: white;
+    text-shadow: 4px 4px #494848da;
+    /* background-color: rgba(0,0,0,0.2); */
     
 }
 @media only screen and (max-width: 1200px){
