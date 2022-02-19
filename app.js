@@ -57,10 +57,11 @@ var upload = multer({ storage: storage });
 var imgModel = require("./model");
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp-relay.sendinblue.com",
+  port: 587,
   auth: {
-    user: process.env.SENDERMAIL,
-    pass: process.env.SENDERPASS
+    user: process.env.email,
+    pass: process.env.smtppass
   },
 });
 
@@ -83,10 +84,10 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
     desc: req.body.desc,
   };
 
-  var mailOptions = {
-    from: process.env.SENDERMAIL,
-    to: process.env.RECIEVERMAIL,
-    subject: "Sending Email using Node.js",
+  var selfmail = {
+    from: process.env.domainemail,
+    to: process.env.email,
+    subject: `New commisioned Artwork by ${orderContent.name}`,
     html:
       "<h1>Order Details</h1><h2>Name: " +
       orderContent.name +
@@ -99,8 +100,7 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
       "</h2><h2>Canva Size:" +
       orderContent.canvaSize +
       "</h2><h2>Description:" +
-      orderContent.desc +
-      '<h2>Attached image: </h2><img src="cid:unique@kreata.ee"/>',
+      orderContent.desc,
     attachments: [
       {
         filename: req.file.originalname ,
@@ -110,7 +110,25 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
     ],
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+  transporter.sendMail(selfmail, function (error, info) {
+    if (error) {
+      const cjdsn = 0;
+      // console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+
+  //
+  var customermail = {
+    from: process.env.domainemail,
+    to: orderContent.addr,
+    subject: "Order Placed!",
+    html:
+    "<center>Thank you, your order has been placed</center>",
+  };
+
+  transporter.sendMail(customermail, function (error, info) {
     if (error) {
       const cjdsn = 0;
       // console.log(error);
@@ -119,6 +137,8 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
       res.redirect("/");
     }
   });
+
+
 })
 
 
