@@ -158,7 +158,7 @@ app.post("/verylongandsecureuploadingurlthatisverylong", upload.single('image'),
     }
     else {
       // item.save();
-      res.redirect('/uploading');
+      res.redirect('/verylongandsecureuploadingurlthatisverylong');
     }
   });
 });
