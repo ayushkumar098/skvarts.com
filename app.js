@@ -184,6 +184,17 @@ app.post("/verylongandsecureuploadingurlthatisverylong", upload.single('image'),
   });
 });
 
+app.post("/delete", function(req, res){
+  imgModel.deleteOne({name: req.body.name}, function(err){
+    if(err){
+      console.log(err);
+    }else{
+      res.redirect("/verylongandsecureuploadingurlthatisverylong");
+      console.log("Delete Successful.");
+    }
+  })
+})
+
 
 
 app.get("/gallerys/:galleryName", function (req, res) {

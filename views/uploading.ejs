@@ -58,18 +58,37 @@
             </div>
         </form>
     </div>
+
+    <div>
+        <form action="/delete" method="post">
+            <h1>To Delete Image from mongoDB</h1>
+            <div>
+                <label for="name">Image Title</label>
+                <input type="text" id="name" placeholder="Name" name="name" required>
+                <p>The name should be of one word only(do not</p>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
   
     <hr>
   
     <h1>Uploaded Images</h1>
     <div>
+        <% var i=0; %>
         <% items.forEach(function(image) { %>
                 <!-- <img src="data:image/<%=image.img.contentType%>;base64,
                      <%=image.img.data.toString('base64')%>"> -->
                 <div style="display: flex; flex-direction: row;">
-                    <h5><%= image.name %></h5>
-                    <h5><%= image.price %></h5>
-                    <h5><%= image.stock %></h5>
+                    
+                    <% i = i+1; %>
+                    <h5> <%= i %></h5>
+                    <h5 style="padding-left:10px;" ><%= image.name %></h5>
+                    <h5 style="padding-left:10px;"><%= image.cat %></h5>
+                    <h5 style="padding-left:10px;"><%= image.price %></h5>
+                    <h5 style="padding-left:10px;"><%= image.stock %></h5>
                 </div>
         <% }) %>
     </div>
