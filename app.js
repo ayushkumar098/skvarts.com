@@ -3,9 +3,9 @@ const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 const multer = require("multer");
-var fs = require("fs");
-var path = require("path");
-// require("dotenv/config");
+const session = require("express-session");
+const fs = require("fs");
+const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config()
 
@@ -13,7 +13,19 @@ dotenv.config()
 const app = express();
 app.set("view engine", "ejs");
 
-const gallerys = [{ title: "oil",subtitle: "PAINTING" },{title: "color",subtitle: "PENCIL" },{title: "graphite",subtitle: "& CHARCOAL"}];
+
+app.use(
+  session({
+    name: "Cart",
+    secret: process.env.cookie || "Sectre-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 630000,
+      sameSite: true,
+    },
+  })
+);
 
 mongoose.connect("mongodb://localhost:27017/imageDB", {
   useNewUrlParser: true,
@@ -26,23 +38,42 @@ app.use("/uploads", express.static("uploads"));
 
 app.set("view engine", "ejs");
 
+
 app.get("/", function(req,res){
-    res.render("index" );
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
+  res.render("index" );
 });
 
 app.get("/about", function (req, res) {
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
   res.render("about",{ title: "About"});
 });
 
 app.get("/category", function (req, res) {
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
   res.render("category", { title: "Gallery" });
+});
+
+app.get("/shopCategory", function (req, res) {
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
+  res.render("shopCategory", { title: "Shop" });
 });
 
 app.get("/confirm", function (req, res) {
   res.render("confirm");
 });
 
+
 //------------Order Page-------------//
+
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -56,6 +87,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 var imgModel = require("./model");
+const { shallowCopyFromList } = require("ejs/lib/utils");
 
 const transporter = nodemailer.createTransport({
   host: "smtp-relay.sendinblue.com",
@@ -66,14 +98,14 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
 app.get("/order", function (req, res) {
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
   res.render("order", { title: "Order" });
 });
 
-
 app.post("/order",upload.single("profile-file"), function(req, res, next){
-
 
   let orderContent = {
     name: req.body.name,
@@ -120,7 +152,6 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
     }
   });
 
-  //
   var customermail = {
     from: process.env.domainemail,
     to: orderContent.addr,
@@ -139,65 +170,22 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
     }
   });
 
-
 })
-
-
 
 
 //------------Gallery Page-------------//
 
 
-
-app.get("/verylongandsecureuploadingurlthatisverylong", function(req,res){
-  imgModel.find({},function(err, items){
-    if(err){
-      const cjdsn = 0;
-    }else{
-      res.render('uploading', { items: items });
-    }
-  })
-});
-
-app.post("/verylongandsecureuploadingurlthatisverylong", upload.single('image'), function(req,res, next){
-  let obj = {
-    name: req.body.name,
-    cat: req.body.cat,
-    price: req.body.price,
-    stock: req.body.stock,
-    size: req.body.size,
-    desc: req.body.desc,
-    img: {
-        data: fs.readFileSync(path.join(__dirname + '/public/uploads/' + req.file.filename)),
-        contentType: 'image/png'
-      }
-  }
-
-  imgModel.create(obj, function(err, item){
-    if(err){
-      const cjdsn = 0;
-    }
-    else {
-      // item.save();
-      res.redirect('/verylongandsecureuploadingurlthatisverylong');
-    }
-  });
-});
-
-app.post("/delete", function(req, res){
-  imgModel.deleteOne({name: req.body.name}, function(err){
-    if(err){
-      console.log(err);
-    }else{
-      res.redirect("/verylongandsecureuploadingurlthatisverylong");
-      console.log("Delete Successful.");
-    }
-  })
-})
-
-
+const gallerys = [
+  { title: "oil", subtitle: "PAINTING" },
+  { title: "color", subtitle: "PENCIL" },
+  { title: "graphite", subtitle: "& CHARCOAL" },
+];
 
 app.get("/gallerys/:galleryName", function (req, res) {
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
   const requestedTitle = req.params.galleryName;
   gallerys.forEach(function (gallery) {
     imgModel.find({cat: requestedTitle}, function(err, foundItems){
@@ -213,21 +201,183 @@ app.get("/gallerys/:galleryName", function (req, res) {
   });
 });
 
-app.get("/images/:imageName", function(req, res){
+
+// -----------SHOP PAGE-------------//
+
+
+const photoModel = require("./shopModel");
+
+app.get("/shops/original", function(req,res){
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
+  
+  photoModel.find({}, function (err, foundItems) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("origShop", { title: "Original", items: foundItems });
+      }
+    }).sort({ originalStock: 1 });
+
+});
+
+app.get("/shops/print", function (req, res) {
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
+
+  photoModel
+    .find({}, function (err, foundItems) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("printShop", { title: "Print", items: foundItems });
+      }
+    })
+    .sort({ printStock: 1 });
+  
+});
+
+
+
+// ------------Image Viewer Page-------//
+
+
+app.get("/images/:imageName", function (req, res) {
+  if (!req.session.cart) {
+    req.session.cart = [];
+  }
   const requestedImage = req.params.imageName;
-    imgModel.find({ name: requestedImage }, function (err, foundItems) {
+  photoModel.find({ name: requestedImage }, function (err, foundItems) {
+    if (err) {
+      const cjdsn = 0;
+    } else {
+      if (foundItems.length === 0) {
+        res.redirect("/error");
+      } else {
+        res.render("imageViewer", { title: "photo", image: foundItems[0] });
+      }
+    }
+  });
+});
+
+app.post("/addToCart", function (req, res) {
+  const data = req.body;
+  console.log(data);
+  req.session.cart.push(data);
+
+  res.json(data);
+});
+
+
+// -----------Uploading Page---------//
+
+
+app.get("/verylongandsecureuploadingurlthatisverylong", function (req, res) {
+  imgModel.find({}, function (err, items) {
+    if (err) {
+      const cjdsn = 0;
+    } else {
+      res.render("uploading", { items: items });
+    }
+  });
+});
+
+app.post(
+  "/verylongandsecureuploadingurlthatisverylong",
+  upload.single("image"),
+  function (req, res, next) {
+    let obj = {
+      name: req.body.name,
+      cat: req.body.cat,
+      img: {
+        data: fs.readFileSync(
+          path.join(__dirname + "/public/uploads/" + req.file.filename)
+        ),
+        contentType: "image/png",
+      },
+    };
+
+    imgModel.create(obj, function (err, item) {
       if (err) {
         const cjdsn = 0;
       } else {
-        if(foundItems.length === 0){
-          res.redirect("/error",);
-        }else{
-          res.render("imageViewer",{title:"photo",image:foundItems[0]});
-        }
-
+        // item.save();
+        res.redirect("/verylongandsecureuploadingurlthatisverylong");
       }
     });
-})
+  }
+);
+
+app.post("/delete", function (req, res) {
+  imgModel.deleteOne({ name: req.body.name }, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/verylongandsecureuploadingurlthatisverylong");
+      console.log("Delete Successful.");
+    }
+  });
+});
+
+
+// ---------photo upload Page---------//
+
+
+app.get("/photoUpload", function (req, res) {
+  photoModel.find({}, function (err, items) {
+    if (err) {
+      const cjdsn = 0;
+    } else {
+      res.render("photoUpload", { items: items });
+    }
+  });
+});
+
+app.post("/photoUpload", upload.single("image"), function (req, res, next) {
+  let obj = {
+    name: req.body.name,
+    cat: req.body.cat,
+    originalStock: req.body.originalStock,
+    originalPrice: req.body.originalPrice,
+    originalSize: req.body.originalSize,
+    printStock: req.body.printStock,
+    printPrice: [
+        { daam: req.body.printPrice1, size: req.body.printSize1 },
+        { daam: req.body.printPrice2, size: req.body.printSize2 },
+        { daam: req.body.printPrice3, size: req.body.printSize3 },
+        { daam: req.body.printPrice4, size: req.body.printSize4 },
+    ],
+    desc: req.body.desc,
+    img: {
+      data: fs.readFileSync(
+        path.join(__dirname + "/public/uploads/" + req.file.filename)
+      ),
+      contentType: "image/png",
+    },
+  };
+
+  photoModel.create(obj, function (err, item) {
+    if (err) {
+      const cjdsn = 0;
+    } else {
+      // item.save();
+      res.redirect("/photoUpload");
+    }
+  });
+});
+
+app.post("/deletePhoto", function (req, res) {
+  photoModel.deleteOne({ name: req.body.name }, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/photoUpload");
+      console.log("Delete Successful.");
+    }
+  });
+});
 
 
 app.get("/error",function(req,res){
@@ -236,9 +386,6 @@ app.get("/error",function(req,res){
 
 
 
-// app.get("/aboutme",function(req,res){
-//   res.render("aboutme",{title:"aboutme"});
-// })
 
 
 app.listen(process.env.PORT || 3000, function(){

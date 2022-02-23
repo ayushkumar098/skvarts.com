@@ -13,8 +13,34 @@
         </div>
     </div>
     <div class="img-cart">
-        <a href="/order"><h3>PLACE AN ORDER</h3></a>
+        <a id="<%= image.id %>" href="#" onclick="myFun(id); return false;"><h3>ADD TO CART</h3></a>
     </div>
 </section>
 
+<script>
+    function myFun(id) {
+
+        document.getElementById(id).href = "/";
+        document.getElementById(id).innerHTML = "Go To Cart";
+        const json = {
+            id: id,
+        };
+    // request options
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(json),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    // send post request
+        fetch('/addToCart', options)
+            .then(res => res.json())
+            .then(res => console.log(res))
+            .catch(err => console.error(err));
+        }      
+        
+</script>
+
 <%- include('partials/footer'); -%>
+
