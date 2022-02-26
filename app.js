@@ -7,8 +7,7 @@ const session = require("express-session");
 const fs = require("fs");
 const path = require("path");
 const dotenv = require("dotenv");
-dotenv.config()
-
+dotenv.config() 
 
 const app = express();
 app.set("view engine", "ejs");
@@ -39,35 +38,34 @@ app.use("/uploads", express.static("uploads"));
 app.set("view engine", "ejs");
 
 
-app.get("/", function(req,res){
-  if (!req.session.cart) {
+
+function checkcookie(req,res,next){
+  if(!req.session.cart){
     req.session.cart = [];
+    next()
+  } else {
+    next();
   }
+}
+
+
+app.get("/",checkcookie, function(req,res){
   res.render("index" );
 });
 
-app.get("/about", function (req, res) {
-  if (!req.session.cart) {
-    req.session.cart = [];
-  }
+app.get("/about",checkcookie, function (req, res) {
   res.render("about",{ title: "About"});
 });
 
-app.get("/category", function (req, res) {
-  if (!req.session.cart) {
-    req.session.cart = [];
-  }
+app.get("/category",checkcookie, function (req, res) {
   res.render("category", { title: "Gallery" });
 });
 
-app.get("/shopCategory", function (req, res) {
-  if (!req.session.cart) {
-    req.session.cart = [];
-  }
+app.get("/shopCategory",checkcookie, function (req, res) {
   res.render("shopCategory", { title: "Shop" });
 });
 
-app.get("/confirm", function (req, res) {
+app.get("/confirm",checkcookie, function (req, res) {
   res.render("confirm");
 });
 
@@ -98,10 +96,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get("/order", function (req, res) {
-  if (!req.session.cart) {
-    req.session.cart = [];
-  }
+app.get("/order",checkcookie, function (req, res) {
   res.render("order", { title: "Order" });
 });
 
@@ -182,10 +177,7 @@ const gallerys = [
   { title: "graphite", subtitle: "& CHARCOAL" },
 ];
 
-app.get("/gallerys/:galleryName", function (req, res) {
-  if (!req.session.cart) {
-    req.session.cart = [];
-  }
+app.get("/gallerys/:galleryName",checkcookie, function (req, res) {
   const requestedTitle = req.params.galleryName;
   gallerys.forEach(function (gallery) {
     imgModel.find({cat: requestedTitle}, function(err, foundItems){
@@ -207,11 +199,7 @@ app.get("/gallerys/:galleryName", function (req, res) {
 
 const photoModel = require("./shopModel");
 
-app.get("/shops/original", function(req,res){
-  if (!req.session.cart) {
-    req.session.cart = [];
-  }
-  
+app.get("/shops/original",checkcookie, function(req,res){
   photoModel.find({}, function (err, foundItems) {
       if (err) {
         console.log(err);
@@ -222,11 +210,7 @@ app.get("/shops/original", function(req,res){
 
 });
 
-app.get("/shops/print", function (req, res) {
-  if (!req.session.cart) {
-    req.session.cart = [];
-  }
-
+app.get("/shops/print",checkcookie, function (req, res) {
   photoModel
     .find({}, function (err, foundItems) {
       if (err) {
@@ -244,10 +228,7 @@ app.get("/shops/print", function (req, res) {
 // ------------Image Viewer Page-------//
 
 
-app.get("/images/:imageName", function (req, res) {
-  if (!req.session.cart) {
-    req.session.cart = [];
-  }
+app.get("/images/:imageName",checkcookie, function (req, res) {
   const requestedImage = req.params.imageName;
   photoModel.find({ name: requestedImage }, function (err, foundItems) {
     if (err) {
@@ -264,9 +245,8 @@ app.get("/images/:imageName", function (req, res) {
 
 app.post("/addToCart", function (req, res) {
   const data = req.body;
-  console.log(data);
+  // console.log(data);
   req.session.cart.push(data);
-
   res.json(data);
 });
 
@@ -284,10 +264,7 @@ app.get("/verylongandsecureuploadingurlthatisverylong", function (req, res) {
   });
 });
 
-app.post(
-  "/verylongandsecureuploadingurlthatisverylong",
-  upload.single("image"),
-  function (req, res, next) {
+app.post("/verylongandsecureuploadingurlthatisverylong", upload.single("image"), function (req, res, next) {
     let obj = {
       name: req.body.name,
       cat: req.body.cat,
@@ -325,7 +302,7 @@ app.post("/delete", function (req, res) {
 // ---------photo upload Page---------//
 
 
-app.get("/photoUpload", function (req, res) {
+app.get("/photoUpload",checkcookie, function (req, res) {
   photoModel.find({}, function (err, items) {
     if (err) {
       const cjdsn = 0;
@@ -368,7 +345,7 @@ app.post("/photoUpload", upload.single("image"), function (req, res, next) {
   });
 });
 
-app.post("/deletePhoto", function (req, res) {
+app.post("/deletePhoto",checkcookie, function (req, res) {
   photoModel.deleteOne({ name: req.body.name }, function (err) {
     if (err) {
       console.log(err);
@@ -380,11 +357,41 @@ app.post("/deletePhoto", function (req, res) {
 });
 
 
-app.get("/error",function(req,res){
+app.get("/error",checkcookie,function(req,res){
   res.render("404",{title:"404"});
 })
 
 
+app.get("/cart", function(req, res){
+
+  if(req.session.cart.length === 0){
+    res.render('404',{title:'404'});
+
+  } else {
+    // console.log(req.session.cart);
+    // var itemsinsession = req.session.cart;
+    ids = [];
+    req.session.cart.forEach(function (eachproduct) {
+      ids.push(eachproduct.id);
+    });
+    console.log(ids);
+
+    photoModel.find({_id : {$in: ids}}, function (err, foundItems) {
+      if(err){
+        console.log(err);
+      }
+      foundItems.forEach(function(item){
+        console.log(item.name,item.id);
+      })
+      res.render("cart",{title:"cart",items:foundItems});
+    });
+
+  }
+
+
+  
+  
+})
 
 
 

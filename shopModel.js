@@ -5,7 +5,7 @@ const photoSchema = new mongoose.Schema({
   cat: String,
   originalStock: Boolean,
   originalPrice: Number,
-  originalSizs: String,
+  originalSize: String,
   printStock: Number,
   printPrice:[{daam: Number, size: String}],
   desc: String,

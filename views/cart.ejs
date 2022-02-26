@@ -1,0 +1,68 @@
+<%- include("partials/header", {title: title }); -%>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/css/cartStyle.css">
+<main id="cart" style="max-width:960px">
+  <h1>Your Cart</h1>
+  <div class="container-fluid">
+    <div class="row align-items-start">
+      <div class="col-12 col-sm-8 items">
+        <% items.forEach(function(item){ %>
+        <!--1-->
+        <div class="cartItem row align-items-start">
+          <div class="col-3 mb-2">
+            <img src="data:image/<%=item.img.contentType%>;base64,
+                     <%=item.img.data.toString('base64')%>">
+          </div>
+          <div class="col-5 mb-2">
+            <h6 class=""><%= item.name %></h6>
+            <p class="pl-1 mb-0"><%= item.originalSize %></p>
+            <p class="pl-1 mb-0"><%= item.cat %></p>
+          </div>
+          <div class="col-2" style="display:flex; flex-direction: row;">
+            <button id="inc" onclick=increase() >+</button>
+            <p class="cartItemQuantity p-1 text-center" id="count" value="1">1</p>
+            <button id="dec" onclick=decrease()>-</button>
+          </div >
+          <div class="col-2">
+            <p id="cartItem1Price"><%= item.originalPrice %></p>
+          </div>
+        </div>
+        <hr>
+        <% }) %>
+      </div>
+      <div class="col-12 col-sm-4 p-3 proceed form">
+        <div class="row m-0">
+          <div class="col-sm-8 p-0">
+            <h6>Subtotal</h6>
+          </div>
+          <div class="col-sm-4 p-0">
+            <p id="subtotal">$132.00</p>
+          </div>
+        </div>
+        <div class="row m-0">
+          <div class="col-sm-8 p-0 ">
+            <h6>Tax</h6>
+          </div>
+          <div class="col-sm-4 p-0">
+            <p id="tax">$6.40</p>
+          </div>
+        </div>
+        <hr>
+        <div class="row mx-0 mb-2">
+          <div class="col-sm-8 p-0 d-inline">
+            <h5>Total</h5>
+          </div>
+          <div class="col-sm-4 p-0">
+            <p id="total">$138.40</p>
+          </div>
+        </div>
+        <a href="#"><button id="btn-checkout" class="shopnow"><span>Checkout</span></button></a>
+      </div>
+    </div>
+  </div>
+  </div>
+</main>
+<footer class="container">
+</footer>
+<script src="/script/cart.js"></script>
+<%- include('partials/footer'); -%>
