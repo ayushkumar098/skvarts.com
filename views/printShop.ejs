@@ -9,7 +9,7 @@
             <% items.forEach(function(image){ %>
             <div class="frame">
                 <div class="photo">
-                    <a href="/images/<%= image.name %>">
+                    <a href="/images/<%=image.type%>/<%= image.name %>">
                     <img  src="data:image/<%=image.img.contentType%>;base64,
                      <%=image.img.data.toString('base64')%>">
                     </a>
@@ -17,11 +17,10 @@
                 
                 <div class="info">
                     <div class="details">
-                        <h4><%= image.name %></h4>
-                        
+                        <h4><%= image.name %></h4>    
                     </div>
                     <div>
-                        <h5>C$ <%= image.price %></h5>
+                        <h5>C$ <%= image.priceInfo[0].price %></h5>
                     </div>
                     <!-- <div class="cart" id="cart" onclick="updateCart()">
                         <i class="fa fa-plus"></i>

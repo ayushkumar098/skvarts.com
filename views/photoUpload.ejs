@@ -21,6 +21,7 @@
                 <input type="text" id="name" placeholder="Name" name="name" required>
                 <p>The name should be of one word only</p>
             </div>
+            
             <div>
                 <label for="cat">Image Catogery</label>
                 <select name="cat" id="cat" required>
@@ -29,39 +30,28 @@
                     <option value="graphite">Graphite & Charcoal</option>
                 </select>
             </div>
-            
-            <!------- original ------->
+
             <div>
-                <h3>Original: </h3>
-                <label for="originalStock">Image Stock Available</label>
-                <select name="originalStock" id="originalStock" required>
-                    <option value="1">1</option>
-                    <option value="0">0</option>
+                <label for="type">Image Type</label>
+                <select name="type" id="type" required>
+                    <option value="original">Original</option>
+                    <option value="print">Print</option>
                 </select>
             </div>
+            
             <div>
-                <label for="originalPrice">Price</label>
-                <input type="text" id="originalPrice" placeholder="Price" name="originalPrice" required>
-            </div>
-            <div>
-                <label for="originalSize">Size</label>
-                <input type="text" id="originalSize" placeholder="Size" name="originalSize" required>
-            </div>
-            <!------------ print ----------->
-            <div>
-                <h3>Print: </h3>
-                <label for="printStock">Print Stock</label>
-                <input type="text" id="printStock" placeholder="Stock" name="printStock" required>
+                <label for="stock">Stock</label>
+                <input type="text" id="stock" placeholder="Stock" name="stock" required>
             </div>
             <% for(var i=1;i<5;i++){ %>
                 <p>Size Option <%= i%>:</p>
                 <div>
-                    <label for="printPrice">Price</label>
-                    <input type="text" id="printPrice" placeholder="Stock" name="printPrice<%= i%>" >
+                    <label for="price">Price</label>
+                    <input type="text" id="price" placeholder="price" name="price<%= i%>" >
                 </div>
                 <div>
-                    <label for="printSize">Size</label>
-                    <input type="text" id="printSize" placeholder="Stock" name="printSize<%= i%>" >
+                    <label for="size">Size</label>
+                    <input type="text" id="size" placeholder="size" name="size<%= i%>" >
                 </div>
             <% } %>
 
@@ -84,6 +74,13 @@
     <div>
         <form action="/deletePhoto" method="post">
             <h1>To Delete Image from mongoDB</h1>
+            <div>
+                <label for="type">Image Type</label>
+                <select name="type" id="type" required>
+                    <option value="original">Original</option>
+                    <option value="print">Print</option>
+                </select>
+            </div>
             <div>
                 <label for="name">Image Title</label>
                 <input type="text" id="name" placeholder="Name" name="name" required>

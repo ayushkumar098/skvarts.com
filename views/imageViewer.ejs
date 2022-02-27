@@ -9,6 +9,14 @@
         <div class="img-desc">
             <h1 class="view-img-name"><%= image.name %></h1>
             <h2 class="view-img-price">C$ <%= image.price %></h2>
+            <label for="imgSize">Image Size</label>
+            <select name="imgSize" id="imgSize" required>
+                <% for(let i=0;i<4;i++){ %>
+                    <% if(image.priceInfo[i].price){ %>
+                        <option value="<%= image.priceInfo[i].size %>"><%= image.priceInfo[i].size %> - C$<%= image.priceInfo[i].price %></option>
+                    <% } %>
+                <% } %>
+            </select>
             <p><%= image.desc %></p>
         </div>
     </div>
@@ -22,8 +30,11 @@
 
         document.getElementById(id).href = "/";
         document.getElementById(id).innerHTML = "Go To Cart";
+        const size = document.getElementById("imgSize").value;
+        console.log(size);
         const json = {
             id: id,
+            size: size
         };
     // request options
         const options = {
