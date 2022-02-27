@@ -10,18 +10,21 @@
         <!--1-->
         <div class="cartItem row align-items-start">
           <div class="col-3 mb-2">
-            <img src="data:image/<%=item.img.contentType%>;base64,
-                     <%=item.img.data.toString('base64')%>">
+            <img src="data:image/<%=images.find(o => o.id === item.id).image.contentType%>;base64,
+            <%=images.find(o => o.id === item.id).image.data.toString('base64')%>">
           </div>
           <div class="col-5 mb-2">
-            <h6 class=""><%= item.name %></h6>
+            <h6 class=""><%= item.name %> <%= item.type %></h6>
             <p class="pl-1 mb-0"><%= item.originalSize %></p>
             <p class="pl-1 mb-0"><%= item.cat %></p>
           </div>
           <div class="col-2" style="display:flex; flex-direction: row;">
-            <button id="inc" onclick=increase() >+</button>
-            <p class="cartItemQuantity p-1 text-center" id="count" value="1">1</p>
-            <button id="dec" onclick=decrease()>-</button>
+            <form action="/deletefromcart?id=<%= item.id %>" method="POST">
+              <button id="<%= item.id %>" type="submit" >DeleteButton</button>
+
+            </form>
+            <!-- <p class="cartItemQuantity p-1 text-center" id="count" value="1">1</p> -->
+            <!-- <button id="dec" onclick=decrease()>-</button> -->
           </div >
           <div class="col-2">
             <p id="cartItem1Price"><%= item.originalPrice %></p>
@@ -64,5 +67,6 @@
 </main>
 <footer class="container">
 </footer>
-<script src="/script/cart.js"></script>
+<script>
+</script>
 <%- include('partials/footer'); -%>

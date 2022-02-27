@@ -230,6 +230,15 @@ app.get("/shops/print",checkcookie, function (req, res) {
 app.get("/images/:type/:imageName",checkcookie, function (req, res) {
   const requestedType = req.params.type;
   const requestedImage = req.params.imageName;
+  
+
+
+  var alreadypresent;
+  if(!req.session.cart.find(o => o.name === requestedImage)){
+    alreadypresent = false;
+  }else{
+    alreadypresent = true;
+  }
 
   if (requestedType == "original") {
     originalModel.find({ name: requestedImage }, function (err, foundItems) {
@@ -239,7 +248,7 @@ app.get("/images/:type/:imageName",checkcookie, function (req, res) {
         if (foundItems.length === 0) {
           res.redirect("/error");
         } else {
-          res.render("imageViewer", { title: "photo", image: foundItems[0] });
+          res.render("imageViewer", { title: "photo", image: foundItems[0],alreadypresent: alreadypresent });
         }
       }
     });
@@ -253,7 +262,7 @@ app.get("/images/:type/:imageName",checkcookie, function (req, res) {
         if (foundItems.length === 0) {
           res.redirect("/error");
         } else {
-          res.render("imageViewer", { title: "photo", image: foundItems[0] });
+          res.render("imageViewer", { title: "photo", image: foundItems[0],alreadypresent: alreadypresent });
         }
       }
     });
@@ -261,12 +270,64 @@ app.get("/images/:type/:imageName",checkcookie, function (req, res) {
   
 });
 
-app.post("/addToCart", function (req, res) {
-  const data = req.body;
-  console.log(data);
-  req.session.cart.push(data);
-  res.json(data);
+app.post("/addToCart",checkcookie,function (req, res) {
+  // const data = req.body;
+  // console.log(data);
+  // req.session.cart.push(data);
+  
+
+
+  var foundItem;
+  data = req.body; // {id,size}
+  // console.log(data);
+  printModel.find({_id: data.id},function(err,foundPrint){
+    if(err){
+      console.log(err);
+    }else {
+      originalModel.find({_id : data.id},function(err,foundOriginal){
+        if(err){
+          console.log(err)
+        }else{
+          //main code
+
+          // console.log(foundOriginal.length);
+          // console.log(foundPrint.length);
+          if(foundOriginal.length != 0){
+            foundItem = foundOriginal[0];
+          }
+          if(foundPrint.length != 0){
+            foundItem = foundPrint[0];
+          }
+          var price;
+          foundItem.priceInfo.forEach(function(iter){
+            if(data.size == iter.size){
+              price = iter.price;
+            }
+          })
+
+          req.session.cart.push({
+            id: data.id,
+            type: foundItem.type,
+            size: data.size,
+            name: foundItem.name,
+            price: price,
+          })
+          res.json(data);
+        }
+      })
+    }
+  })
 });
+
+
+app.post('/deletefromcart',checkcookie,function(req,res){
+  todelete = req.query.id;
+  req.session.cart = req.session.cart.filter(function(obj){
+    return obj.id != todelete;
+  })
+  res.redirect('/cart');
+
+})
 
 
 // -----------Uploading Page---------//
@@ -409,33 +470,39 @@ app.get("/error",checkcookie,function(req,res){
 })
 
 
-app.get("/cart", function(req, res){
+app.get("/cart",checkcookie, function(req, res){
 
-  if(req.session.cart.length === 0){
+  if(req.session.cart == undefined || req.session.cart.length === 0){
     res.render('404',{title:'404'});
 
   } else {
-    ids = [];
-    allItems = [];
-    req.session.cart.forEach(function (eachproduct) {
-      ids.push(eachproduct.id);
-    });
-    console.log(ids);
-
-    originalModel.find({_id : {$in: ids}}, function (err, foundItems) {
+    console.log(req.session.cart);
+    ids = []
+    images = []
+    req.session.cart.forEach(function(item){
+      ids.push(item.id);
+    })
+    printModel.find({_id : {$in : ids}},function(err,foundPrint){
       if(err){
         console.log(err);
+      }else{
+        originalModel.find({_id : {$in : ids}},function(err,foundOriginal){
+          if(err){
+            console.log(err);
+          }else{
+            foundOriginal.forEach(function(item){
+              images.push({id : item.id, image : item.img})
+            });
+            foundPrint.forEach(function(item){
+              images.push({id : item.id, image : item.img})
+            });
+            
+            res.render('cart',{title: 'Cart', items: req.session.cart, images : images});
+          }
+        });
       }
-      foundItems.forEach(function(item){
-        console.log(item.name,item.id);
-        allItems.push(item);
-      })
-      
-    });
-    
-    console.log(allItems[0].name);
-    res.render("cart", { title: "cart", items: allItems });
 
+    });
   }
   
 })
