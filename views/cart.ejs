@@ -19,8 +19,8 @@
             <p class="pl-1 mb-0"><%= item.cat %></p>
           </div>
           <div class="col-2" style="display:flex; flex-direction: row;">
-            <form action="/deletefromcart?id=<%= item.id %>" method="POST">
-              <button id="<%= item.id %>" type="submit" >DeleteButton</button>
+            <form action="/deletefromcart" method="POST" >
+              <button id="<%= item.id %>" type="submit" name="id" value="<%= item.id %>">DeleteButton</button>
 
             </form>
             <!-- <p class="cartItemQuantity p-1 text-center" id="count" value="1">1</p> -->

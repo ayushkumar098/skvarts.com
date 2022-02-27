@@ -29,7 +29,7 @@
     var alreadypresent = <%= alreadypresent %>;
     if(alreadypresent){
         console.log("inside function");
-        document.getElementsByClassName('Button')[0].innerHTML = 'Already In Cart!';
+        document.getElementsByClassName('Button')[0].innerHTML = 'Added To Cart!';
         document.getElementsByClassName('Button')[0].href = "/cart";
     }
 
@@ -37,7 +37,7 @@
         if(!alreadypresent){
             alreadypresent = true;
             console.log("Inside False");
-            document.getElementsByClassName('Button')[0].innerHTML = 'Added To Cart!';
+            //document.getElementsByClassName('Button')[0].innerHTML = 'Added To Cart!';
             const size = document.getElementById("imgSize").value;
             console.log(size);
             const json = {
@@ -56,9 +56,9 @@
             fetch('/addToCart', options)
                 .then(res => res.json())
                 .then(res => console.log(res))
+                .then(document.location.reload(true))
                 .catch(err => console.error(err));
             }      
-            document.location.reload(true);
 
         }
         

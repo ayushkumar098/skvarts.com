@@ -321,7 +321,7 @@ app.post("/addToCart",checkcookie,function (req, res) {
 
 
 app.post('/deletefromcart',checkcookie,function(req,res){
-  todelete = req.query.id;
+  todelete = req.body.id;
   req.session.cart = req.session.cart.filter(function(obj){
     return obj.id != todelete;
   })
