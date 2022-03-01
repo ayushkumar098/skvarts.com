@@ -6,6 +6,7 @@
   <div class="container-fluid">
     <div class="row align-items-start">
       <div class="col-12 col-sm-8 items">
+        <% let total = 0; %>
         <% items.forEach(function(item){ %>
         <!--1-->
         <div class="cartItem row align-items-start">
@@ -15,8 +16,8 @@
           </div>
           <div class="col-5 mb-2">
             <h6 class=""><%= item.name %> <%= item.type %></h6>
-            <p class="pl-1 mb-0"><%= item.originalSize %></p>
-            <p class="pl-1 mb-0"><%= item.cat %></p>
+            <p class="pl-1 mb-0"><%= item.size %></p>
+            <p class="pl-1 mb-0"><%= item.price %></p>
           </div>
           <div class="col-2" style="display:flex; flex-direction: row;">
             <form action="/deletefromcart" method="POST" >
@@ -31,6 +32,7 @@
           </div>
         </div>
         <hr>
+        <% total = total + item.price; %>
         <% }) %>
       </div>
       <div class="col-12 col-sm-4 p-3 proceed form">
@@ -53,13 +55,13 @@
         <hr>
         <div class="row mx-0 mb-2">
           <div class="col-sm-8 p-0 d-inline">
-            <h5>Total</h5>
+            <h5>TOTAL</h5>
           </div>
           <div class="col-sm-4 p-0">
-            <p id="total">$138.40</p>
+            <p id="total">C$ <%= total %></p>
           </div>
         </div>
-        <a href="#"><button id="btn-checkout" class="shopnow"><span>Checkout</span></button></a>
+        <a href="/create-checkout-session"><button id="btn-checkout" class="shopnow"><span>Checkout</span></button></a>
       </div>
     </div>
   </div>
@@ -67,6 +69,5 @@
 </main>
 <footer class="container">
 </footer>
-<script>
-</script>
+
 <%- include('partials/footer'); -%>

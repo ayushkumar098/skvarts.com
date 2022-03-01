@@ -6,61 +6,35 @@
             <img src="data:image/<%=image.img.contentType%>;base64,
                      <%=image.img.data.toString('base64')%>">
         </div>
-        <div class="img-desc">
-            <h1 class="view-img-name"><%= image.name %></h1>
-            <h2 class="view-img-price">C$ <%= image.price %></h2>
-            <label for="imgSize">Image Size</label>
-            <select name="imgSize" id="imgSize" required>
-                <% for(let i=0;i<4;i++){ %>
-                    <% if(image.priceInfo[i].price){ %>
-                        <option value="<%= image.priceInfo[i].size %>"><%= image.priceInfo[i].size %> - C$<%= image.priceInfo[i].price %></option>
-                    <% } %>
-                <% } %>
-            </select>
-            <p><%= image.desc %></p>
-        </div>
+        <form action="/addToCart" method="post">
+            <div class="img-desc">
+                <h1 class="view-img-name"><%= image.name %></h1>
+                <h2 class="view-img-price">C$ <%= image.price %></h2>
+                
+                    <label for="imgSize">Image Size</label>
+                    <select name="imgSize" id="imgSize" required>
+                        <% for(let i=0;i<4;i++){ %>
+                            <% if(image.priceInfo[i].price){ %>
+                                <option value="<%= image.priceInfo[i].size %>"><%= image.priceInfo[i].size %> - C$<%= image.priceInfo[i].price %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                <p><%= image.desc %></p>
+            </div>
+            <div class="img-cart">   
+                <% if (alreadypresent){ %>
+                    <a class="Button"  id="<%= image.id %>" href="/cart" name="id" value="<%= image.id %>"><h3>Go To CART</h3></a>  
+                <%}else{%>
+                    <button class="Button" type="submit" id="<%= image.id %>" href="#" name="id" value="<%= image.id %>"><h3>ADD TO CART</h3></button>  
+                <%}%>
+            </div>
+        </form>
     </div>
-    <div class="img-cart">
-        <a class="Button" id="<%= image.id %>" href="#" onclick="myFun(id);"><h3>ADD TO CART</h3></a>
-    </div>
+    
+    
 </section>
 
 <script>
-    var alreadypresent = <%= alreadypresent %>;
-    if(alreadypresent){
-        console.log("inside function");
-        document.getElementsByClassName('Button')[0].innerHTML = 'Added To Cart!';
-        document.getElementsByClassName('Button')[0].href = "/cart";
-    }
-
-    function myFun(id) {
-        if(!alreadypresent){
-            alreadypresent = true;
-            console.log("Inside False");
-            //document.getElementsByClassName('Button')[0].innerHTML = 'Added To Cart!';
-            const size = document.getElementById("imgSize").value;
-            console.log(size);
-            const json = {
-                id: id,
-                size: size
-            };
-        // request options
-            const options = {
-                method: 'POST',
-                body: JSON.stringify(json),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-        // send post request
-            fetch('/addToCart', options)
-                .then(res => res.json())
-                .then(res => console.log(res))
-                .then(document.location.reload(true))
-                .catch(err => console.error(err));
-            }      
-
-        }
         
 </script>
 

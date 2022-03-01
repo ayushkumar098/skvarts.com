@@ -1,8 +1,110 @@
-<%- include("partials/header", {title: title }); -%>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/lightbox.min.css">
+    <link rel="stylesheet" href="../css/gallery.css">
+    <script src="../js/lightbox-plus-jquery.min.js"></script>
+    <title><%= title %> </title>
+</head>
+<body>
+    <section class="sub-header-general">
+        <nav>
+            <a class="title" href="/">SKV</a>
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="/about">ABOUT</a></li>
+                    <li><a href="/category">GALLERY</a></li>
+                    <li><a href="/shopCategory">SHOP</a></li>
+                    <li><a href="/order">ORDER</a></li>
+                    <li><a href="/cart">CART</a></li>
+                </ul>
+            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>
+    </section>
 
+    <section class="gallery-page">
+        <div class="gallery-heading">
+            <h4><%= title %> Painting</h4>
+        </div>
+        <div class="gallery-content">
+            <div class="col">
+                <% var n = 0 %>
+                <% while(n < items.length){ %>
+                <div class="photo">
+                     <a href="data:image/<%=items[n].img.contentType%>;base64,
+                        <%=items[n].img.data.toString('base64')%>" data-lightbox="mygallery">   
+                     <img  src="data:image/<%=items[n].img.contentType%>;base64,
+                     <%=items[n].img.data.toString('base64')%>">
+                     </a>  
+                    <div class="info">
+                         <div class="details">
+                            <h4><%= items[n].name %></h4>
+                        </div>
+                    </div>
+                </div>
+                <% n=n+1 %>
+                <% } %>
+            </div>
+                <div class="col-1"></div>
+                <div class="col-2"></div>
+                <div class="col-3"></div>
+        </div> 
+    </section>
 
+    <section class="footer">
+        <div class="icons">
+            <a href="https://www.instagram.com/skv.arts/"><i class="fa fa-instagram"></i></a>
+            <a href="https://m.facebook.com/profile.php?id=100018278464932&ref=content_filter"><i class="fa fa-facebook"></i></a>
+            <a href="https://www.linkedin.com/in/suminder-kaur-01756b21b"><i class="fa fa-linkedin"></i></a>
+            <a href="https://twitter.com/SuminderKaur15?t=PUSSJxjCqYVfQ6LVC3giww&s=08"><i class="fa fa-twitter"></i></a>
+        </div>
+    </section>
+    
+    
+    <script>
+        var navLinks = document.getElementById("navLinks");
+        var navsection = document.getElementsByClassName('sub-header-general')[0];
+    
+        function showMenu() {
+            navLinks.style.right = "0";
+            navsection.style.overflow = "visible";
+        }
+    
+        function hideMenu() {
+            navLinks.style.right = "-250px";
+            setTimeout('navsection.style.overflow = "hidden";', 1000);
+        }
+        //Title
+        let title = document.querySelector('.gallery-heading h4');
+        title.innerHTML = title.innerHTML.slice(0,1).toUpperCase() + title.innerHTML.slice(1);
 
+        // Tidying up the gallery
+        let photo = document.querySelectorAll('.photo');
+        let col1 = document.querySelector('.col-1');
+        let col2 = document.querySelector('.col-2');
+        let col3 = document.querySelector('.col-3');
+        for(var i=0; i<photo.length; i++){
+            if(i%3 == 0){
+                col1.appendChild(photo[i]);
+            }
+            else if(i%3 == 1){
+                col2.appendChild(photo[i]);
+            }
+            else if(i%3 == 2){
+                col3.appendChild(photo[i]);
+            }
+        }
+        document.querySelector('.col').remove();
 
+    </script>
+</body>
+</html>
 
-<%- include('partials/footer'); -%>

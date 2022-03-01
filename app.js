@@ -9,6 +9,11 @@ const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config() 
 
+const Publishable_Key = "";
+const Secret_Key = "";
+
+const stripe = require("stripe")(Secret_Key);
+
 const app = express();
 app.set("view engine", "ejs");
 
@@ -50,10 +55,61 @@ function checkcookie(req,res,next){
   }
 }
 
+const storeItems = new Map([
+  [1,{price: 10000, name: "product1"}],
+  [2,{price: 20000, name: "product2"}],
+]);
 
-app.get("/",checkcookie, function(req,res){
-  res.render("index" );
-});
+app.get("/demo",function(req, res){
+  res.render("demoPay");
+})
+
+// Create a post request for /create-checkout-session
+app.get("/create-checkout-session",checkcookie, async (req, res) => {
+  try {
+    
+    var lineItems = [];
+    req.session.cart.forEach((item) => {
+      let data  = {
+                    price_data: {
+                      currency: "inr",
+                      product_data: {
+                        name: item.name,
+                        description: item.type+" "+ item.size
+                      },
+                      unit_amount: item.price+"00",
+                    },
+                    quantity: 1,
+                  }
+      lineItems.push(data);
+    });
+
+    // Create a checkout session with Stripe
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      shipping_address_collection: {
+        allowed_countries: ["US", "CA","IN"],
+      },
+      line_items: lineItems,
+      phone_number_collection: {
+        enabled: true,
+      },
+      mode: "payment",
+      success_url: `http://localhost:3000/success`,
+      cancel_url: `http://localhost:3000/faliure`,
+    });
+    res.redirect(session.url);
+    // res.json({ url: session.url })
+  } catch (e) {
+    // If there is an error send it to the client
+    res.status(500).json({ error: e.message })
+  }
+})
+
+
+  app.get("/", checkcookie, function (req, res) {
+    res.render("index");
+  });
 
 app.get("/about",checkcookie, function (req, res) {
   res.render("about",{ title: "About"});
@@ -188,6 +244,7 @@ app.get("/gallerys/:galleryName",checkcookie, function (req, res) {
       }else {
         
         if (requestedTitle === gallery.title) {
+          // console.log(foundItems[0].name);
         res.render("gallery", { title: gallery.title,subtitle: gallery.subtitle, items: foundItems});
         }
       }
@@ -248,6 +305,7 @@ app.get("/images/:type/:imageName",checkcookie, function (req, res) {
         if (foundItems.length === 0) {
           res.redirect("/error");
         } else {
+          console.log(alreadypresent);
           res.render("imageViewer", { title: "photo", image: foundItems[0],alreadypresent: alreadypresent });
         }
       }
@@ -262,6 +320,7 @@ app.get("/images/:type/:imageName",checkcookie, function (req, res) {
         if (foundItems.length === 0) {
           res.redirect("/error");
         } else {
+          console.log(alreadypresent);
           res.render("imageViewer", { title: "photo", image: foundItems[0],alreadypresent: alreadypresent });
         }
       }
@@ -271,52 +330,44 @@ app.get("/images/:type/:imageName",checkcookie, function (req, res) {
 });
 
 app.post("/addToCart",checkcookie,function (req, res) {
-  // const data = req.body;
-  // console.log(data);
-  // req.session.cart.push(data);
   
-
-
+  let data = req.body; //{id,size}
   var foundItem;
-  data = req.body; // {id,size}
-  // console.log(data);
-  printModel.find({_id: data.id},function(err,foundPrint){
-    if(err){
+  var price;
+  console.log(data);
+  printModel.find({ _id: data.id }, function (err, foundPrint) {
+    if (err) {
       console.log(err);
-    }else {
-      originalModel.find({_id : data.id},function(err,foundOriginal){
-        if(err){
-          console.log(err)
-        }else{
-          //main code
-
-          // console.log(foundOriginal.length);
-          // console.log(foundPrint.length);
-          if(foundOriginal.length != 0){
+    } else {
+      originalModel.find({ _id: data.id }, function (err, foundOriginal) {
+        if (err) {
+          console.log(err);
+        } else {
+          if (foundOriginal.length != 0) {
             foundItem = foundOriginal[0];
           }
-          if(foundPrint.length != 0){
+          if (foundPrint.length != 0) {
             foundItem = foundPrint[0];
           }
-          var price;
-          foundItem.priceInfo.forEach(function(iter){
-            if(data.size == iter.size){
+          // console.log(foundItem);
+          foundItem.priceInfo.forEach(function (iter) {
+            if (data.imgSize == iter.size) {
               price = iter.price;
             }
-          })
-
+          });
           req.session.cart.push({
             id: data.id,
             type: foundItem.type,
-            size: data.size,
+            size: data.imgSize,
             name: foundItem.name,
             price: price,
-          })
-          res.json(data);
+          });
+          res.redirect("/images/"+foundItem.type+"/"+foundItem.name);
         }
-      })
+      });
     }
   })
+
 });
 
 
