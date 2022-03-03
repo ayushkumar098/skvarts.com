@@ -1399,3 +1399,55 @@ h3{
         font-size: 2em;
     }
 }
+
+/* -----------Success Page--------- */
+
+.big-box{
+    border: 2px solid #000000;
+    margin: 6% 25%;
+    display: flex;
+    flex-direction:column;
+}
+
+.logo-box{
+    align-items: center;
+}
+
+.page-box{
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+.colm-1, .colm-2{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #000000;
+    
+    /* justify-content: left; */
+}
+
+.colm-1{
+    padding-right: 0%;
+    
+}
+
+.colm-2{
+    padding-left: 20%;
+}
+
+.colm-1 h3{
+    text-align: left;
+}
+
+.colm-2 h3{
+    text-align: right;
+}
+
+
+
+
+
+

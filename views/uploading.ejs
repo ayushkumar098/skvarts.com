@@ -6,15 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Image </title>
     <style>
-        div{
+        .thisClass div{
             padding: 10px;
         }
+        
+        
+
     </style>
 </head>
 <body>
     <h1>To Upload Image on mongoDB</h1>
     <hr>
-    <div>
+    <div class="thisClass">
         <form action="/verylongandsecureuploadingurlthatisverylong" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="name">Image Title</label>
@@ -31,26 +34,6 @@
             </div>
             
             <div>
-                <label for="price">Image Price</label>
-                <input type="text" id="price" placeholder="Price" name="price" required>
-            </div>
-            <div>
-                <label for="stock">Image Stock Available</label>
-                <select name="stock" id="stock" required>
-                    <option value="1">1</option>
-                    <option value="0">0</option>
-                </select>
-            </div>
-            <div>
-                <label for="size">Image Size</label>
-                <input type="text" id="size" placeholder="Size" name="size" required>
-            </div>
-            <div>
-                <label for="desc">Image Description</label>
-                <textarea id="desc" name="desc" rows="3" cols="100" placeholder="Description" required>
-                </textarea>
-            </div>
-            <div>
                 <label for="image">Upload Image</label>
                 <input type="file" id="image" name="image" value="" required>
             </div>
@@ -60,7 +43,7 @@
         </form>
     </div>
 
-    <div>
+    <div class="thatClass">
         <form action="/delete" method="post">
             <h1>To Delete Image from mongoDB</h1>
             <div>

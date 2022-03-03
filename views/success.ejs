@@ -1,1 +1,29 @@
-<h1>Payment Successful</h1>
+<%- include("partials/header", {title: title }); -%>
+
+<section>
+    <div class="big-box">
+        <div class="logo-box">
+            <h2>Payment Successful</h2>
+            <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_wkebwzpz.json" background="transparent" speed="1" style="width: 300px; height: 300px;" autoplay></lottie-player>
+        </div>
+        <div class="page-box">
+            <div class="colm-1">
+                <h3>Name</h3>
+                <h3>Mobile</h3>
+                <h3>Email</h3>
+                <h3>Amount Paid</h3>
+            </div>
+            <div class="colm-2">
+                <h3><%= name %></h3>
+                <h3><%= id %></h3>
+                <h3>436554356</h3>
+                <h3>34655466767</h3>
+            </div>
+        </div>
+    </div>
+    
+</section>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+
+<%- include('partials/footer'); -%>

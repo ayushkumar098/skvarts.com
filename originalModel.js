@@ -4,7 +4,7 @@ const originalSchema = new mongoose.Schema({
   name: String,
   cat: String,
   type: String,
-  Stock: Number,
+  stock: Number,
   priceInfo: [{ price: Number, size: String }],
   desc: String,
   img: {

@@ -1,0 +1,28 @@
+<%- include("partials/header", {title: title }); -%>
+<head>
+    <style>
+        .this {
+            padding:30vh 0 30vh 25%;
+            
+        }
+        .this h1{
+            font-size: 5rem;
+        }
+        .this h2{
+            padding: 3% 15%;
+        }
+        .this button{
+            margin: 0% 20%;
+            padding: 1.5% 5%;
+        }
+    </style>
+</head>
+<section>
+    <div class="this">
+        <h1>Your Cart is Empty</h1>
+        <h2>Add paintings to your cart</h2>
+        <button><a href="/shopCategory">GO TO SHOP</a></button>
+    </div>
+    
+</section>
+<%- include('partials/footer'); -%>

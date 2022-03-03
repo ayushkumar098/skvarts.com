@@ -9,8 +9,10 @@ const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config() 
 
-const Publishable_Key = "";
-const Secret_Key = "";
+const Publishable_Key =
+  "pk_test_51KWvvBSFmynGEeRTGevvKqqKb2vLW2wbPFjgzFput4jpb5QWpmzJJdnZoNi63sPuHu4CoOjkXHI8tV997sMzhRVJ00x0eZp3iz";
+const Secret_Key =
+  "sk_test_51KWvvBSFmynGEeRTaspCfJNuh7OAFPkUWLPsEkvypLehmEraOnQ6wB6IhthdAFnyKunnJC36kGaQKh5BpwOPPelw00RXeevrQa";
 
 const stripe = require("stripe")(Secret_Key);
 
@@ -26,7 +28,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 630000,
-      sameSite: true,
+      sameSite: "lax",
     },
   })
 );
@@ -55,16 +57,8 @@ function checkcookie(req,res,next){
   }
 }
 
-const storeItems = new Map([
-  [1,{price: 10000, name: "product1"}],
-  [2,{price: 20000, name: "product2"}],
-]);
 
-app.get("/demo",function(req, res){
-  res.render("demoPay");
-})
 
-// Create a post request for /create-checkout-session
 app.get("/create-checkout-session",checkcookie, async (req, res) => {
   try {
     
@@ -88,23 +82,71 @@ app.get("/create-checkout-session",checkcookie, async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       shipping_address_collection: {
-        allowed_countries: ["US", "CA","IN"],
+        allowed_countries: ["US", "CA", "IN"],
       },
       line_items: lineItems,
       phone_number_collection: {
         enabled: true,
       },
       mode: "payment",
-      success_url: `http://localhost:3000/success`,
+      success_url: `http://localhost:3000/order/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `http://localhost:3000/faliure`,
     });
     res.redirect(session.url);
-    // res.json({ url: session.url })
   } catch (e) {
-    // If there is an error send it to the client
     res.status(500).json({ error: e.message })
   }
 })
+
+app.get("/order/success", async (req, res) => {
+  const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+  const customer = await stripe.customers.retrieve(session.customer);
+  if(customer){
+    console.log(req.session.cart);
+    req.session.cart.forEach(function(item){
+    
+    if(item.type == 'original'){
+      
+      originalModel.findOneAndUpdate({_id: item.id},{$inc: {'stock': -1}}, function(err, foundItem){
+         if(err){
+          console.log(err);
+         }else{
+           console.log("updated");
+           req.session = null;
+           res.render("success", {
+             title: "Payment Successful",
+             name: customer.name,
+             id: customer.id
+           });
+         }
+      
+      })
+    }
+    if (item.type == "print") {
+      printModel.findOneAndUpdate(
+        { _id: item.id },
+        { $inc: { stock: -1 } },
+        function (err, foundItem) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("updated");
+            req.session = null;
+            res.render("success", {
+              title: "Payment Successful",
+              name: customer.name,
+              id: customer.id,
+            });
+          }
+        }
+      );
+    }
+  })  
+    
+  }else{
+    res.redirect("/");
+  } 
+});
 
 
   app.get("/", checkcookie, function (req, res) {
@@ -329,6 +371,7 @@ app.get("/images/:type/:imageName",checkcookie, function (req, res) {
   
 });
 
+
 app.post("/addToCart",checkcookie,function (req, res) {
   
   let data = req.body; //{id,size}
@@ -370,6 +413,7 @@ app.post("/addToCart",checkcookie,function (req, res) {
 
 });
 
+// ------------CART PAGE-----------
 
 app.post('/deletefromcart',checkcookie,function(req,res){
   todelete = req.body.id;
@@ -378,7 +422,48 @@ app.post('/deletefromcart',checkcookie,function(req,res){
   })
   res.redirect('/cart');
 
-})
+});
+
+
+app.get("/cart", checkcookie, function (req, res) {
+  if (req.session.cart == undefined || req.session.cart.length === 0) {
+    res.render("emptyCart", { title: "Cart",});
+  } else {
+    console.log(req.session.cart);
+    ids = [];
+    images = [];
+    req.session.cart.forEach(function (item) {
+      ids.push(item.id);
+    });
+    printModel.find({ _id: { $in: ids } }, function (err, foundPrint) {
+      if (err) {
+        console.log(err);
+      } else {
+        originalModel.find(
+          { _id: { $in: ids } },
+          function (err, foundOriginal) {
+            if (err) {
+              console.log(err);
+            } else {
+              foundOriginal.forEach(function (item) {
+                images.push({ id: item.id, image: item.img });
+              });
+              foundPrint.forEach(function (item) {
+                images.push({ id: item.id, image: item.img });
+              });
+
+              res.render("cart", {
+                title: "Cart",
+                items: req.session.cart,
+                images: images,
+              });
+            }
+          }
+        );
+      }
+    });
+  }
+});
 
 
 // -----------Uploading Page---------//
@@ -516,48 +601,11 @@ app.post("/deletePhoto",checkcookie, function (req, res) {
 });
 
 
-app.get("/error",checkcookie,function(req,res){
-  res.render("404",{title:"404"});
-})
 
 
-app.get("/cart",checkcookie, function(req, res){
-
-  if(req.session.cart == undefined || req.session.cart.length === 0){
-    res.render('404',{title:'404'});
-
-  } else {
-    console.log(req.session.cart);
-    ids = []
-    images = []
-    req.session.cart.forEach(function(item){
-      ids.push(item.id);
-    })
-    printModel.find({_id : {$in : ids}},function(err,foundPrint){
-      if(err){
-        console.log(err);
-      }else{
-        originalModel.find({_id : {$in : ids}},function(err,foundOriginal){
-          if(err){
-            console.log(err);
-          }else{
-            foundOriginal.forEach(function(item){
-              images.push({id : item.id, image : item.img})
-            });
-            foundPrint.forEach(function(item){
-              images.push({id : item.id, image : item.img})
-            });
-            
-            res.render('cart',{title: 'Cart', items: req.session.cart, images : images});
-          }
-        });
-      }
-
-    });
-  }
-  
-})
-
+app.get("/error", checkcookie, function (req, res) {
+  res.render("404", { title: "404"});
+});
 
 
 app.listen(process.env.PORT || 3000, function(){
