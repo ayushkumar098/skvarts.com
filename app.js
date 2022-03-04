@@ -96,13 +96,12 @@ app.get("/create-checkout-session",checkcookie, async (req, res) => {
   }
 })
 
+
 app.get("/order/success", async (req, res) => {
   const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
   const customer = await stripe.customers.retrieve(session.customer);
 
   if(customer){
-
-
     // Send Mail to Customer : 
     //
     var customermail = {
