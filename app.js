@@ -9,10 +9,8 @@ const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config() 
 
-const Publishable_Key =
-  "pk_test_51KWvvBSFmynGEeRTGevvKqqKb2vLW2wbPFjgzFput4jpb5QWpmzJJdnZoNi63sPuHu4CoOjkXHI8tV997sMzhRVJ00x0eZp3iz";
-const Secret_Key =
-  "sk_test_51KWvvBSFmynGEeRTaspCfJNuh7OAFPkUWLPsEkvypLehmEraOnQ6wB6IhthdAFnyKunnJC36kGaQKh5BpwOPPelw00RXeevrQa";
+const Publishable_Key = process.env.Publishable_Key;
+const Secret_Key = process.env.Secret_Key;
 
 const stripe = require("stripe")(Secret_Key);
 
@@ -101,47 +99,61 @@ app.get("/create-checkout-session",checkcookie, async (req, res) => {
 app.get("/order/success", async (req, res) => {
   const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
   const customer = await stripe.customers.retrieve(session.customer);
+
   if(customer){
-    console.log(req.session.cart);
-    req.session.cart.forEach(function(item){
+
+
+    // Send Mail to Customer : 
+    //
+    var customermail = {
+      from: process.env.domainemail,
+      to: customer.email,
+      subject: "Order Placed!",
+      html:
+      "<center>Thank you, your order has been placed</center>",
+    };
+
+    transporter.sendMail(customermail, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+
+
+    //update Cart
+    //
+    var mycartcopy = req.session.cart;
+    mycartcopy.forEach(function(item){
     
-    if(item.type == 'original'){
-      
-      originalModel.findOneAndUpdate({_id: item.id},{$inc: {'stock': -1}}, function(err, foundItem){
-         if(err){
-          console.log(err);
-         }else{
-           console.log("updated");
-           req.session = null;
-           res.render("success", {
-             title: "Payment Successful",
-             name: customer.name,
-             id: customer.id
-           });
-         }
-      
-      })
-    }
-    if (item.type == "print") {
-      printModel.findOneAndUpdate(
-        { _id: item.id },
-        { $inc: { stock: -1 } },
-        function (err, foundItem) {
-          if (err) {
+      if(item.type == 'original'){
+        
+        originalModel.findOneAndUpdate({_id: item.id},{$inc: {'stock': -1}}, function(err, foundItem){
+           if(err){
             console.log(err);
-          } else {
-            console.log("updated");
-            req.session = null;
-            res.render("success", {
-              title: "Payment Successful",
-              name: customer.name,
-              id: customer.id,
-            });
+           }else{
+             console.log("updated");
+           }
+        
+        })
+      }
+      if (item.type == "print") {
+        printModel.findOneAndUpdate(
+          { _id: item.id },
+          { $inc: { stock: -1 } },
+          function (err, foundItem) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("updated");
+            }
           }
-        }
-      );
-    }
-  })  
+        );
+      }
+    })  
+    req.session.cart = [];
+    res.render("success",{title : "Payment Successful",name : customer.name, id : customer.id});
     
   }else{
     res.redirect("/");
