@@ -19,7 +19,6 @@
               <p class=""><%= item.name %></p>
               <h6 class="pl-1 mb-0"> <%= item.type %></h6>
               <h6 class="pl-1 mb-0">Size: <%= item.size %></h6>
-              <!-- <h5 class="pl-1 mb-0">Price: C$<%= item.price %></h5> -->
             </div>
             <div class="col-2" >
               <form action="/deletefromcart" method="POST" >
@@ -43,6 +42,7 @@
             <div class="col-sm-4 p-0">
               <h5 id="total">C$ <%= total %></h5>
             </div>
+            <hr>
           </div>
           <a href="/create-checkout-session"><button id="btn-checkout" class="shopnow"><span>Checkout</span></button></a>
         </div>

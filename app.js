@@ -6,6 +6,7 @@ const multer = require("multer");
 const session = require("express-session");
 const fs = require("fs");
 const path = require("path");
+// const _ = require("lodash")
 const dotenv = require("dotenv");
 dotenv.config() 
 
@@ -298,7 +299,7 @@ app.get("/gallerys/:galleryName",checkcookie, function (req, res) {
         
         if (requestedTitle === gallery.title) {
           // console.log(foundItems[0].name);
-        res.render("gallery", { title: gallery.title,subtitle: gallery.subtitle, items: foundItems});
+          res.render("gallery", { title: gallery.title,subtitle: gallery.subtitle, items: foundItems});
         }
       }
     });
@@ -344,29 +345,36 @@ app.get("/images/:type/:imageName",checkcookie, function (req, res) {
 
 
   var alreadypresent;
-  if(!req.session.cart.find(o => o.name === requestedImage)){
+  if (!req.session.cart.find((o) => o.name === requestedImage)) {
     alreadypresent = false;
-  }else{
+  } else {
     alreadypresent = true;
   }
 
   if (requestedType == "original") {
-    originalModel.find({ name: requestedImage }, function (err, foundItems) {
-      if (err) {
-        const cjdsn = 0;
-      } else {
-        if (foundItems.length === 0) {
-          res.redirect("/error");
+    originalModel.find(
+      { name: req.params.imageName },
+      function (err, foundItems) {
+        if (err) {
+          const cjdsn = 0;
         } else {
-          console.log(alreadypresent);
-          res.render("imageViewer", { title: "photo", image: foundItems[0],alreadypresent: alreadypresent });
+          if (foundItems.length === 0) {
+            res.redirect("/error");
+          } else {
+            console.log(alreadypresent);
+            res.render("imageViewer", {
+              title: "photo",
+              image: foundItems[0],
+              alreadypresent: alreadypresent,
+            });
+          }
         }
       }
-    });
+    );
   }
 
   if(requestedType == "print"){
-    printModel.find({ name: requestedImage }, function (err, foundItems) {
+    printModel.find({ name: req.params.imageName }, function (err, foundItems) {
       if (err) {
         const cjdsn = 0;
       } else {
@@ -374,7 +382,11 @@ app.get("/images/:type/:imageName",checkcookie, function (req, res) {
           res.redirect("/error");
         } else {
           console.log(alreadypresent);
-          res.render("imageViewer", { title: "photo", image: foundItems[0],alreadypresent: alreadypresent });
+          res.render("imageViewer", {
+            title: "photo",
+            image: foundItems[0],
+            alreadypresent: alreadypresent,
+          });
         }
       }
     });

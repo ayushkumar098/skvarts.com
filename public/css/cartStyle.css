@@ -118,6 +118,7 @@ h6{
 .shopnow,
 .contact {
   background-color: #000;
+  border: 1px solid white;
   padding: 10px 20px;
   font-size: 30px;
   color: white;
@@ -164,7 +165,7 @@ h6{
 }
 
 .col-3{
-  width:10%
+  width:30%
 }
 
 .col-5{
@@ -176,9 +177,19 @@ h6{
 }
 .remove-btn{
   border-radius:3px;
+  border: 1px solid white;
   font-size: 0.8em;
+  padding: 0 0.5rem;
   color: #fff;
-  background-color: #000;
+  transition: all 0.3s ease-in-out;
+  background-image: linear-gradient(to right top, #050a11, #020a18, #01081d, #020722, #060426);
+}
+
+.remove-btn:hover {
+  background: #f44336;
+  border: none;
+  box-shadow: 2px 2px 1px #883636;
+  transform: scale(1.1);
 }
 
 .col-2 p{
