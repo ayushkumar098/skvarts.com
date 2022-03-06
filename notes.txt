@@ -1,0 +1,10 @@
+Pages that have their own header:
+1)index.ejs
+2)cart.ejs
+3)gallery.ejs
+4)confirm
+
+Pages that have their own header:
+1)cart.ejs
+2)gallery.ejs
+3)confirm

@@ -1,57 +1,115 @@
-<%- include("partials/header", {title: title }); -%>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/css/cartStyle.css">
-<section class="cart-section">
-  <main id="cart" style="max-width:960px">
-    <h1>Your Cart</h1>
-    <div class="container-fluid">
-      <div class="row align-items-start">
-        <div class="col-12 col-sm-8 items">
-          <% let total = 0; %>
-          <% items.forEach(function(item){ %>
-          <!--1-->
-          <div class="cartItem row align-items-start">
-            <div class="col-3 mb-2">
-              <img src="data:image/<%=images.find(o => o.id === item.id).image.contentType%>;base64,
-              <%=images.find(o => o.id === item.id).image.data.toString('base64')%>">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/newcart.css">
+    <title>Cart</title>
+</head>
+<body>
+    <section class="sub-header-general">
+        <nav>
+            <a class="title" href="/">SKV</a>
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="/about">ABOUT</a></li>
+                    <li><a href="/category">GALLERY</a></li>
+                    <li><a href="/shopCategory">SHOP</a></li>
+                    <li><a href="/order">ORDER</a></li>
+                </ul>
             </div>
-            <div class="col-5 mb-2">
-              <p class=""><%= item.name %></p>
-              <h6 class="pl-1 mb-0"> <%= item.type %></h6>
-              <h6 class="pl-1 mb-0">Size: <%= item.size %></h6>
-            </div>
-            <div class="col-2" >
-              <form action="/deletefromcart" method="POST" >
-                <button class="remove-btn" id="<%= item.id %>" type="submit" name="id" value="<%= item.id %>">Remove</button>
-              </form>
-            </div >
-            <div class="col-2">
-              <p id="cartItem1Price">C$<%= item.price %></p>
-            </div>
-          </div>
-          <hr>
-          <% total = total + item.price; %>
-          <% }) %>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>
+    </section>
+
+    <section class="cart-section">
+        <div class="cart-title">
+            <h1><span>Your</span> CART</h1>
         </div>
-        <div class="col-12 col-sm-4 p-3 proceed form">
-          
-          <div class="row mx-0 mb-2">
-            <div class="col-sm-8 p-0 d-inline">
-              <h5>TOTAL</h5>
+        <div class="cart-whole flex-between">
+       
+            <div class="line-split">
+                <h2 class="items-title">ITEMS</h2>
+                <% items.forEach(function(item){ %>
+                <div class="cart-orders">
+                    <img src="data:image/<%=images.find(o => o.id === item.id).image.contentType%>;base64,
+                        <%=images.find(o => o.id === item.id).image.data.toString('base64')%>">
+                    <h2 class="cart-item-name"><%= item.name %></h2>
+                    <h2 class="cart-item-price">C$<%= item.price %></h2>
+                    <h2 class="cart-item-quantity">1</h2>
+                    <form action="/deletefromcart" method="POST" >
+                        <button class="remove-cart-item" id="<%= item.id %>" type="submit" name="id" value="<%= item.id %>"><i class="fa fa-trash"></i></button>
+                    </form>
+                </div>
+                <% }) %>
+                <hr>  
             </div>
-            <div class="col-sm-4 p-0">
-              <h5 id="total">C$ <%= total %></h5>
+        
+            <div class="cart-checkout">
+                <div class="summary-title">
+                    <h2>Order Summary</h2>
+                </div>
+                <% let total = 0; %>
+                <% items.forEach(function(item){ %>
+                <div class="cart-item">
+                    <h3 class="cart-item-num">1.</h3>
+                    <h3 class="cart-item-name"><%= item.name %></h2>
+                    <h3 class="cart-item-quantity">x1</h2>
+                    <h3 class="cart-item-price">C$<%= item.price %></h2>
+                </div>
+                <% total = total + item.price; %>
+                <% }) %>
+                <hr>
+                <div class="cart-total">
+                    <div class="flex-between">
+                        <h3 class="tax">Tax:</h2>
+                        <h3 class="tax-charge">C$ 2.90</h2>
+                    </div>
+                    <div class="flex-between">
+                        <h3 class="shipping">Shipping:</h2>
+                        <h3 class="shipping-charge">C$ 10.0</h2>
+                    </div>
+                    <div class="flex-between tot">
+                        <h2 class="total">Total</h2>
+                        <h2 class="total-charge">C$ <%= total %></h2>
+                    </div>
+                    <div class="checkout-items">
+                        <a href="/create-checkout-session"><button id="btn-checkout" class="shopnow"><span>Checkout</span></button></a>
+                        <!-- <button class="checkout-btn"><span class="check">CHECKOUT</span></button> -->
+                    </div>
+                    
+                    
+                </div>
             </div>
-            <hr>
-          </div>
-          <a href="/create-checkout-session"><button id="btn-checkout" class="shopnow"><span>Checkout</span></button></a>
         </div>
-      </div>
-    </div>
-    </div>
-  </main>
-</section>
-
-
-
-<%- include('partials/footer'); -%>
+    </section>
+    
+    <section class="footer">
+        <div class="icons">
+            <a href="https://www.instagram.com/skv.arts/"><i class="fa fa-instagram"></i></a>
+            <a href="https://m.facebook.com/profile.php?id=100018278464932&ref=content_filter"><i class="fa fa-facebook"></i></a>
+            <a href="https://www.linkedin.com/in/suminder-kaur-01756b21b"><i class="fa fa-linkedin"></i></a>
+            <a href="https://twitter.com/SuminderKaur15?t=PUSSJxjCqYVfQ6LVC3giww&s=08"><i class="fa fa-twitter"></i></a>
+        </div>
+    </section>
+    
+    <script>
+        var navLinks = document.getElementById("navLinks");
+        var navsection = document.getElementsByClassName('sub-header-general')[0];
+    
+        function showMenu() {
+            navLinks.style.right = "0";
+            navsection.style.overflow = "visible";
+        }
+    
+        function hideMenu() {
+            navLinks.style.right = "-250px";
+            setTimeout('navsection.style.overflow = "hidden";', 1000);
+        }
+    </script>
+</body>
+</html>

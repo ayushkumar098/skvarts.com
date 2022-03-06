@@ -334,7 +334,6 @@ app.get("/shops/print",checkcookie, function (req, res) {
 });
 
 
-
 // ------------Image Viewer Page-------//
 
 

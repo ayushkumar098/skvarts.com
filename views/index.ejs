@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SKVArts - The passionné d'art</title>
     <link rel="icon" href="/icons/skvlogo.jpeg" type="image/x-icon">
-
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/headerFooter.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +19,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,400;0,500;0,700;1,500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .header{
+            min-height: 100vh;
+            width: 100%;
+            background-color: black;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body>
@@ -43,7 +54,7 @@
         <div class="text-box">
             <h1 id="name-text"><span id="fn">Suminder</span> <span id="mn">Kaur</span> <span id="ln">Vahra</span></h1>
             <br>
-            <p style="font-size:22px">ARTIST</p>
+            <p >VISUAL ARTIST</p>
             <!-- <a href="order.html" class="order-btn">Get Your Own Potrait</a> -->
         </div>
         <div class="arrow">
@@ -131,17 +142,6 @@
 
     </section>
 
-    <!-----Footer----->
-    <section class="footer">
-    <div class="icons">
-        <a href="https://www.instagram.com/skv.arts/"><i class="fa fa-instagram"></i></a>
-        <a href="https://m.facebook.com/profile.php?id=100018278464932&ref=content_filter"><i class="fa fa-facebook"></i></a>
-        <a href="https://www.linkedin.com/in/suminder-kaur-01756b21b"><i class="fa fa-linkedin"></i></a>
-        <a href="https://twitter.com/SuminderKaur15?t=PUSSJxjCqYVfQ6LVC3giww&s=08"><i class="fa fa-twitter"></i></a>
-    </div>
-    </section>
-
-    <!-----x--Footer--x----->
     <script>
         var navLinks = document.getElementById("navLinks");
         var name = document.getElementById("name-text");
@@ -157,19 +157,8 @@
             name.innerHTML = "Suminder<br>Kaur<br>Vahra";
         }
 
-        function showMenu() {
-            navLinks.style.display = 'inline-block';
-            navLinks.style.right = "0";
-
-        }
-
-        function hideMenu() {
-            navLinks.style.right = "-250px";
-            // navLinks.style.display = 'none';
-        }
     </script>
-</body>
 
-</html>
-
-
+    <!-----Footer----->
+<%- include('partials/footer'); -%>
+ 

@@ -13,7 +13,15 @@
     src: local('Awakening'), url('../fonts/AwakenningPersonalUse-DOLPD.ttf') format('truetype');
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Display&family=Poppins&display=swap');
+@font-face {
+    font-family: 'PlaylistScript';
+    font-style: normal;
+    font-weight: normal;
+    src: local('PlaylistScript'), url('../fonts/FontsFree-Net-PlaylistScript.ttf');
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Exa&display=swap');
 
 *{
     margin: 0;
@@ -165,6 +173,7 @@ nav .fa{
     border-bottom: 3px solid #232423;
     font-family: mistrully;
 }
+
 .gallery-content{
     width: auto;
     height: 100%;

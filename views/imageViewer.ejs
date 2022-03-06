@@ -11,8 +11,8 @@
                 <div class="img-desc">
                     <h1 class="view-img-name"><%= image.name %></h1>
                     <h2 class="view-img-price">C$ <%= image.priceInfo[0].price %></h2>
-                    
-                        <label for="imgSize" id="img_size">Select Size</label>
+                    <!-- <h3 class="view-img-cat"><%= image.cat %></h3> -->
+                        <label for="imgSize" id="img_size">SELECT SIZE</label>
                         <select name="imgSize" id="imgSize" required>
                             <% for(let i=0;i<4;i++){ %>
                                 <% if(image.priceInfo[i].price){ %>

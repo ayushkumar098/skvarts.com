@@ -1,5 +1,5 @@
 <%- include("partials/header", {title: title }); -%>
-
+<section class="shopSection"></section>
 <div class="container">
         <div class="heading">
             <h3><span id="title"><%= title%></span></h3>
@@ -17,27 +17,21 @@
                 
                 <div class="info">
                     <div class="details">
-                        <h4><%= image.name %></h4>    
+                        <h4 id="imgName"><%= image.name %></h4>    
                     </div>
                     <div>
                         <h5>C$ <%= image.priceInfo[0].price %></h5>
                     </div>
-                    <!-- <div class="cart" id="cart" onclick="updateCart()">
-                        <i class="fa fa-plus"></i>
-                        <span>CART</span>
-                    </div> -->
                 </div>
             </div>
             <% }) %>
         </div>
     </div>
-
+</section>
 <script>
-    let title = document.getElementById('title');
-    title.innerHTML = title.innerHTML.slice(0,1).toUpperCase() + title.innerHTML.slice(1);
-    if (title.innerHTML == 'Color'){
-        title.innerHTML = 'Colour';
-    }
+    let nam = document.getElementById('imgName');
+    nam.innerHTML = name.innerHTML.toUpperCase();
+
 </script>
 
 
