@@ -918,14 +918,14 @@ h3{
     padding: 1.5% 5%;
     border-radius: 15px;
     transition-duration: 0.4s;
-    color: #fff;
+    color: black;
     background-color: rgba(10, 10, 10, 0.034);
 }
 
 
 #button:hover {
-  background-color: white; /* Green */
-  color: black;
+  background-color: black; /* Green */
+  color: #fff;
 }
 
 @media(max-width: 700px){

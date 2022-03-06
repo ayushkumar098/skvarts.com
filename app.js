@@ -1,4 +1,5 @@
 const express = require("express");
+const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
@@ -224,27 +225,30 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
     desc: req.body.desc,
   };
 
+  
+
   var selfmail = {
     from: process.env.domainemail,
     to: process.env.email,
     subject: `New commisioned Artwork by ${orderContent.name}`,
-    html:
-      "<h1>Order Details</h1><h2>Name: " +
-      orderContent.name +
-      "</h2><h2>Phone Number:" +
-      orderContent.phno +
-      "</h2><h2>Email:" +
-      orderContent.addr +
-      "</h2><h2>Paint Type:" +
-      orderContent.paint +
-      "</h2><h2>Canva Size:" +
-      orderContent.canvaSize +
-      "</h2><h2>Description:" +
-      orderContent.desc,
+    html: ejs.render("email/orderMail", { orderContent: orderContent }),
+    // "<h1>Order Details</h1><h2>Name: " +
+    // orderContent.name +
+    // "</h2><h2>Phone Number:" +
+    // orderContent.phno +
+    // "</h2><h2>Email:" +
+    // orderContent.addr +
+    // "</h2><h2>Paint Type:" +
+    // orderContent.paint +
+    // "</h2><h2>Canva Size:" +
+    // orderContent.canvaSize +
+    // "</h2><h2>Description:" +
+    // orderContent.desc,
+
     attachments: [
       {
-        filename: req.file.originalname ,
-        path: __dirname + "/public/uploads/"+ req.file.originalname,
+        filename: req.file.originalname,
+        path: __dirname + "/public/uploads/" + req.file.originalname,
         cid: "unique@kreata.ee", //same cid value as in the html img src
       },
     ],

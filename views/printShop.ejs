@@ -22,6 +22,11 @@
                     <div>
                         <h5>C$ <%= image.priceInfo[0].price %></h5>
                     </div>
+                    <% if(image.stock <= 0){ %>
+                    <div>
+                        <h4 style="color:red">SOLD</h4>
+                    </div>
+                    <% } %>
                 </div>
             </div>
             <% }) %>

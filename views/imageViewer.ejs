@@ -10,18 +10,23 @@
             <form action="/addToCart" method="post">
                 <div class="img-desc">
                     <h1 class="view-img-name"><%= image.name %></h1>
-                    <h2 class="view-img-price">C$ <%= image.priceInfo[0].price %></h2>
-                    <!-- <h3 class="view-img-cat"><%= image.cat %></h3> -->
-                        <label for="imgSize" id="img_size">SELECT SIZE</label>
-                        <select name="imgSize" id="imgSize" required>
-                            <% for(let i=0;i<4;i++){ %>
-                                <% if(image.priceInfo[i].price){ %>
-                                    <option value="<%= image.priceInfo[i].size %>"><%= image.priceInfo[i].size %> - C$<%= image.priceInfo[i].price %></option>
-                                <% } %>
+                    <% if(image.priceInfo[1].price === null){ %>
+                        <h2 class="view-img-price">C$ <%= image.priceInfo[0].price %></h2>
+                    <%}else{%>
+                        <h2 class="view-img-price">C$ <%= image.priceInfo[0].price %> - C$ <%= image.priceInfo[1].price %></h2>
+                    <%}%>
+                    <h3 class="view-img-cat" style="text-align: left;">Category: <%= image.cat %></h3>
+                    <label for="imgSize" id="img_size">SELECT SIZE</label>
+                    <select name="imgSize" id="imgSize" required>
+                        <% for(let i=0;i<4;i++){ %>
+                            <% if(image.priceInfo[i].price){ %>
+                                <option value="<%= image.priceInfo[i].size %>"><%= image.priceInfo[i].size %> - C$<%= image.priceInfo[i].price %></option>
                             <% } %>
-                        </select>
+                        <% } %>
+                    </select>
                     <p><%= image.desc %></p>
                 </div>
+                <% if(image.stock > 0){ %>
                 <div class="img-cart">   
                     <% if (alreadypresent){ %>
                         <a class="Button"  id="<%= image.id %>" href="/cart" name="id" value="<%= image.id %>"><h3>GO TO CART</h3></a>  
@@ -29,6 +34,9 @@
                         <button class="Button" type="submit" id="<%= image.id %>" href="#" name="id" value="<%= image.id %>"><h3>ADD TO CART</h3></button>  
                     <%}%>
                 </div>
+                <% }else{ %>
+                    <h2 style="color: red; font-size:xx-large;">SOLD OUT</h>
+                <%}%>
             </form>
         </div>
         
