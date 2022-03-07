@@ -227,41 +227,44 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
 
   
 
-  var selfmail = {
-    from: process.env.domainemail,
-    to: process.env.email,
-    subject: `New commisioned Artwork by ${orderContent.name}`,
-    html: ejs.render("email/orderMail", { orderContent: orderContent }),
-    // "<h1>Order Details</h1><h2>Name: " +
-    // orderContent.name +
-    // "</h2><h2>Phone Number:" +
-    // orderContent.phno +
-    // "</h2><h2>Email:" +
-    // orderContent.addr +
-    // "</h2><h2>Paint Type:" +
-    // orderContent.paint +
-    // "</h2><h2>Canva Size:" +
-    // orderContent.canvaSize +
-    // "</h2><h2>Description:" +
-    // orderContent.desc,
+  ejs.renderFile(__dirname + '/views/email/orderMail.ejs',{orderContent : orderContent},function(err,str){
+    var selfmail = {
+      from: process.env.domainemail,
+      to: process.env.email,
+      subject: `New commisioned Artwork by ${orderContent.name}`,
+      html: str,
+      // "<h1>Order Details</h1><h2>Name: " +
+      // orderContent.name +
+      // "</h2><h2>Phone Number:" +
+      // orderContent.phno +
+      // "</h2><h2>Email:" +
+      // orderContent.addr +
+      // "</h2><h2>Paint Type:" +
+      // orderContent.paint +
+      // "</h2><h2>Canva Size:" +
+      // orderContent.canvaSize +
+      // "</h2><h2>Description:" +
+      // orderContent.desc,
 
-    attachments: [
-      {
-        filename: req.file.originalname,
-        path: __dirname + "/public/uploads/" + req.file.originalname,
-        cid: "unique@kreata.ee", //same cid value as in the html img src
-      },
-    ],
-  };
+      attachments: [
+        {
+          filename: req.file.originalname,
+          path: __dirname + "/public/uploads/" + req.file.originalname,
+          cid: "unique@kreata.ee", //same cid value as in the html img src
+        },
+      ],
+    };
 
-  transporter.sendMail(selfmail, function (error, info) {
-    if (error) {
-      const cjdsn = 0;
-      // console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+    transporter.sendMail(selfmail, function (error, info) {
+      if (error) {
+        const cjdsn = 0;
+        // console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+
+  })
 
   var customermail = {
     from: process.env.domainemail,
