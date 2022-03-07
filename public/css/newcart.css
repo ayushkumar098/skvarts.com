@@ -181,6 +181,7 @@ nav .fa{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 15px;
 }
 .cart-orders img{
     width: 60px;
@@ -203,11 +204,11 @@ nav .fa{
     width: 45%;
     height: auto;
     padding: 1rem;
-    border-radius: 50px;
+    border-radius: 10px;
     background: #d9d9d9;
-    box-shadow:  20px 20px 60px #b8b8b8,
+    /* box-shadow:  20px 20px 60px #b8b8b8,
              -20px -20px 60px #fafafa;
-    /* box-shadow: 2rem 0 1rem #d1c9c9; */
+    box-shadow: 2rem 0 1rem #d1c9c9; */
 }
 .summary-title{
     display: flex;
@@ -246,7 +247,8 @@ nav .fa{
     transition: all 0.3s ease-in;
 }
 .check{
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    font-weight: bold;
 }
 .checkout-btn:hover{
     background: #f44336;

@@ -32,7 +32,7 @@
 
     <section class="gallery-page">
         <div class="gallery-heading">
-            <h4><%= title %> <%= subtitle%></h4>
+            <h4><%= title %> <span><%= subtitle%></span></h4>
         </div>
         <div class="gallery-content">
             <div class="col">
@@ -85,6 +85,12 @@
         //Title
         let title = document.querySelector('.gallery-heading h4');
         title.innerHTML = title.innerHTML.slice(0,1).toUpperCase() + title.innerHTML.slice(1);
+        
+        //Getting Image Captions
+        var caption = document.querySelectorAll('.details h4');
+        for(var i=0; i<caption.length; i++){
+            caption[i].innerHTML = caption[i].innerHTML.toUpperCase();
+        } 
 
         // Tidying up the gallery
         let photo = document.querySelectorAll('.photo');

@@ -9,7 +9,7 @@
         <div class="img-details">
             <form action="/addToCart" method="post">
                 <div class="img-desc">
-                    <h1 class="view-img-name"><%= image.name %></h1>
+                    <h1 class="view-img-name"><%= image.name.toUpperCase() %></h1>
                     <% if(image.priceInfo[1].price === null){ %>
                         <h2 class="view-img-price">C$ <%= image.priceInfo[0].price %></h2>
                     <%}else{%>

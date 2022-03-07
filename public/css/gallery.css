@@ -22,6 +22,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Exa&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC&display=swap');
 
 *{
     margin: 0;
@@ -165,14 +166,18 @@ nav .fa{
     padding-bottom: 2rem;
 }
 .gallery-heading h4{
-    background: linear-gradient(to right, #4B4453, #4E415F, #B0A8B9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #f44336;
     text-align: center;
-    font-size: 3rem;
+    font-size: 6rem;
     font-weight: bold;
-    border-bottom: 3px solid #232423;
-    font-family: mistrully;
+    border-bottom: 3px solid #f44336;
+    font-family: PlaylistScript;
+}
+.gallery-heading span{
+    font-family: 'Playfair Display SC', serif;
+    color: #f44336;
+    font-size: 65%;
+    font-weight: 400;
 }
 
 .gallery-content{
@@ -190,21 +195,25 @@ nav .fa{
     width: 32.5%;
 }
 .photo .info{
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: column;
-    align-items: baseline;
-    justify-content: left;
-    bottom: 10%;
-    width: auto;
-    /* background: linear-gradient(to right, #232526, #ffff1f) */
-    /* background: linear-gradient(to right, #232526, #414345); */
+    align-items: center;
+    justify-content: center;
+    bottom: 0;
+    padding: 0.45rem 0;
+    width: 100%;
+    background-image: linear-gradient(to right top, #ffffff, #f2f4f6, #e2eaeb, #d6dfdb, #d0d3c9);
+    opacity: 0.8;
+    /* background: linear-gradient(to right top, ); */
+    
 }
 .photo{
-    margin-top: -30px;
+    position: relative;
     overflow: hidden;
     width: auto;
     height: fit-content;
+    margin-bottom: 10px;
 }
 .photo img{
     width: 100%;
@@ -212,10 +221,10 @@ nav .fa{
     border-radius: 5px;
 }
 .photo img:hover{
-    transform: scaleX(1.1);
+    transform: scale(1.1);
 }
 .details h4{
-    font-family: Awakening;
+    font-family: 'Lexend Exa', sans-serif;
     font-size: 2rem;
     color: black;
     width: auto;
