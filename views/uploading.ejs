@@ -6,20 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Image </title>
     <style>
-        div{
+        .thisClass div{
             padding: 10px;
         }
+        
+        
+
     </style>
 </head>
 <body>
     <h1>To Upload Image on mongoDB</h1>
     <hr>
-    <div>
+    <div class="thisClass">
         <form action="/verylongandsecureuploadingurlthatisverylong" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="name">Image Title</label>
                 <input type="text" id="name" placeholder="Name" name="name" required>
-                <p>The name should be of one word only(do not</p>
+                <p>The name should be of one word only</p>
             </div>
             <div>
                 <label for="cat">Image Catogery</label>
@@ -29,29 +32,24 @@
                     <option value="graphite">Graphite & Charcoal</option>
                 </select>
             </div>
-            <div>
-                <label for="price">Image Price</label>
-                <input type="text" id="price" placeholder="Price" name="price" required>
-            </div>
-            <div>
-                <label for="stock">Image Stock Available</label>
-                <select name="stock" id="stock" required>
-                    <option value="1">1</option>
-                    <option value="0">0</option>
-                </select>
-            </div>
-            <div>
-                <label for="size">Image Size</label>
-                <input type="text" id="size" placeholder="Size" name="size" required>
-            </div>
-            <div>
-                <label for="desc">Image Description</label>
-                <textarea id="desc" name="desc" rows="3" cols="100" placeholder="Description" required>
-                </textarea>
-            </div>
+            
             <div>
                 <label for="image">Upload Image</label>
                 <input type="file" id="image" name="image" value="" required>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="thatClass">
+        <form action="/delete" method="post">
+            <h1>To Delete Image from mongoDB</h1>
+            <div>
+                <label for="name">Image Title</label>
+                <input type="text" id="name" placeholder="Name" name="name" required>
+                <p>The name should be of one word only(do not</p>
             </div>
             <div>
                 <button type="submit">Submit</button>
@@ -63,13 +61,18 @@
   
     <h1>Uploaded Images</h1>
     <div>
+        <% var i=0; %>
         <% items.forEach(function(image) { %>
                 <!-- <img src="data:image/<%=image.img.contentType%>;base64,
                      <%=image.img.data.toString('base64')%>"> -->
                 <div style="display: flex; flex-direction: row;">
-                    <h5><%= image.name %></h5>
-                    <h5><%= image.price %></h5>
-                    <h5><%= image.stock %></h5>
+                    
+                    <% i = i+1; %>
+                    <h5> <%= i %></h5>
+                    <h5 style="padding-left:10px;" ><%= image.name %></h5>
+                    <h5 style="padding-left:10px;"><%= image.cat %></h5>
+                    <h5 style="padding-left:10px;"><%= image.price %></h5>
+                    <h5 style="padding-left:10px;"><%= image.stock %></h5>
                 </div>
         <% }) %>
     </div>

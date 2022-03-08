@@ -1,0 +1,82 @@
+<%- include("partials/header", {title: title }); -%>
+
+<section class="shop-section">
+    <div class="shop-header">
+        <div class="shop-header-title">
+            <h1>Shop</h1>
+        </div>
+    </div>
+    <div class="shop-cat-items">
+        <div class="shop-orig">
+            <div class="shop-img">
+                <img src="../images/original.jpeg" alt="">
+            </div>
+            <div class="shop-cat-heading" id="org">
+                <h2>ORIGINALS</h2>
+            </div>
+        </div>
+        <div class="shop-print">
+            <div class="shop-img">
+                <img src="../images/print.jpeg" alt="">
+            </div>
+            <div class="shop-cat-heading" id="pri">
+                <h2>PRINTS</h2>
+            </div>
+        </div>
+        <div class="shop-custom">
+            <div class="shop-img cus">
+                <img src="../images/custom.jpeg" alt="">
+            </div>
+            <div class="shop-cat-heading" id="cus">
+                <h2>CUSTOM MADE</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    var org = document.querySelector('.shop-orig');
+    var print1 = document.querySelector('.shop-print');
+    var custom = document.querySelector('.shop-custom');
+
+    org.addEventListener('click', ()=>{
+        window.location.href = "/shops/original"
+    })
+    print1.addEventListener('click', ()=>{
+        window.location.href = "/shops/print";
+    })
+    custom.addEventListener('click', ()=>{
+        window.location.href = "/order";
+    })
+
+    var orig = document.getElementById('org')
+    var pri = document.getElementById('pri')
+    var cus = document.getElementById('cus')
+
+    org.addEventListener('mouseover', ()=>{
+        orig.style.borderBottom = '10px solid red';
+    })
+    org.addEventListener('mouseout', ()=>{
+        orig.style.borderBottom = 'none';
+    })
+
+    print1.addEventListener('mouseover', ()=>{
+        pri.style.borderBottom = '10px solid red';
+    })
+    print1.addEventListener('mouseout', ()=>{
+        pri.style.borderBottom = 'none';
+    })
+
+    custom.addEventListener('mouseover', ()=>{
+        cus.style.borderBottom = '10px solid red';
+    })
+    custom.addEventListener('mouseout', ()=>{
+        cus.style.borderBottom = 'none';
+    })
+
+
+
+</script>
+
+
+<%- include('partials/footer'); -%>

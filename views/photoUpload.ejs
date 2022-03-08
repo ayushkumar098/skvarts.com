@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image </title>
+    <style>
+        .thisClass div{
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>To Upload Image on mongoDB</h1>
+    <hr>
+    <div class="thisClass">
+        <form action="/photoUpload" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="name">Image Title</label>
+                <input type="text" id="name" placeholder="Name" name="name" required>
+            </div>
+            
+            <div>
+                <label for="cat">Image Catogery</label>
+                <select name="cat" id="cat" required>
+                    <option value="oil">Oil Painting</option>
+                    <option value="color">Color Pencil</option>
+                    <option value="graphite">Graphite & Charcoal</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="type">Image Type</label>
+                <select name="type" id="type" required>
+                    <option value="original">Original</option>
+                    <option value="print">Print</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="stock">Stock</label>
+                <input type="text" id="stock" placeholder="Stock" name="stock" required>
+            </div>
+            <p style='background-color : yellow'>Size 1 is for Least Priced Size <br> Size 2 is for Max Priced Size</p>
+            <% for(var i=1;i<5;i++){ %>
+                <p>Size Option <%= i%>:</p>
+                <div>
+                    <label for="price">Price</label>
+                    <input type="text" id="price" placeholder="price" name="price<%= i%>" >
+                </div>
+                <div>
+                    <label for="size">Size</label>
+                    <input type="text" id="size" placeholder="size" name="size<%= i%>" >
+                </div>
+            <% } %>
+
+            <!--------- Description -------->
+            <div>
+                <label for="desc">Image Description</label>
+                <textarea id="desc" name="desc" rows="3" cols="100" placeholder="Description" required>
+                </textarea>
+            </div>
+            <div>
+                <label for="image">Upload Image</label>
+                <input type="file" id="image" name="image" value="" required>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <form action="/deletePhoto" method="post">
+            <h1>To Delete Image from mongoDB</h1>
+            <div>
+                <label for="type">Image Type</label>
+                <select name="type" id="type" required>
+                    <option value="original">Original</option>
+                    <option value="print">Print</option>
+                </select>
+            </div>
+            <div>
+                <label for="name">Image Title</label>
+                <input type="text" id="name" placeholder="Name" name="name" required>
+                <p>The name should be of one word only(do not</p>
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+  
+    <hr>
+  
+    <h1>Uploaded Images</h1>
+    <div>
+        <% var i=0; %>
+        <% items.forEach(function(image) { %>
+                <!-- <img src="data:image/<%=image.img.contentType%>;base64,
+                     <%=image.img.data.toString('base64')%>"> -->
+                <div style="display: flex; flex-direction: row;">
+                    
+                    <% i = i+1; %>
+                    <h5> <%= i %></h5>
+                    <h5 style="padding-left:10px;" ><%= image.name %></h5>
+                    <h5 style="padding-left:10px;"><%= image.cat %></h5>
+                    <h5 style="padding-left:10px;"><%= image.price %></h5>
+                    <h5 style="padding-left:10px;"><%= image.stock %></h5>
+                </div>
+        <% }) %>
+    </div>
+</body>
+</html>
