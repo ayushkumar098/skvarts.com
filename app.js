@@ -57,13 +57,40 @@ function checkcookie(req,res,next){
   }
 }
 
+//remove this 
 app.get("/invoice", checkcookie, function (req, res) {
   res.render("email/invoice");
 });
 
+
+// app.post('/validate',function(req,res){
+//   var pincode = req.body.pincode;
+//   var us = new RegExp('^[0-9]{5}(?:[- ][0-9]{4})?$')
+//   var canada = new RegExp('^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$')
+//   // var canada = new RegExp('ab*');
+//   var localEdmonton = new RegExp('');
+//   if(pincode.match(us)){
+//     req.session.shipping = { country: "US", shippingCharge: 70000 };
+//   } else if (pincode.match(canada)){
+//     req.session.shipping  = {country : "CA", shippingCharge : 50000 };
+//   } else {
+//     req.session.shipping = {valid : false};
+//   }
+//   res.redirect('/cart');
+// });
+
+
+
 app.get("/create-checkout-session",checkcookie, async (req, res) => {
   try {
-    
+    //error handle
+    //
+    if(!req.session.cart || !req.session.shipping){
+      res.redirect('/cart');
+    }
+
+
+
     var lineItems = [];
     req.session.cart.forEach((item) => {
       let data  = {
@@ -80,35 +107,27 @@ app.get("/create-checkout-session",checkcookie, async (req, res) => {
       lineItems.push(data);
     });
 
-    const shipping = {
+    const country = {
           type: 'fixed_amount',
           fixed_amount: {
-            amount: req.session.cart[0].shipping + "00",
+            amount: req.session.shipping.shippingCharge,
             currency: 'inr',
           },
-          display_name: 'Free Shipping',
-          delivery_estimate: {
-            minimum: {
-              unit: 'business_day',
-              value: 5,
-            },
-            maximum: {
-              unit: 'business_day',
-              value: 7,
-            },
-          }
+          display_name: "Shipping Charge",
         }
+
 
     // Create a checkout session with Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       shipping_address_collection: {
-        allowed_countries: ["US", "CA", "IN"],
+        // allowed_countries: ["US", "CA", "IN"],
+        allowed_countries: [req.session.shipping.country],
       },
       shipping_options: [
-      {
-        shipping_rate_data: shipping,
-      }
+        {
+          shipping_rate_data: country,
+        }
     ],
       line_items: lineItems,
       phone_number_collection: {
@@ -119,11 +138,6 @@ app.get("/create-checkout-session",checkcookie, async (req, res) => {
       cancel_url: `http://localhost:3000/failure`,
     });
     res.redirect(session.url);
-    // if(shipping_options.shipping_rate_data.display_name == shipping_address_collection.allowed_countries[0]){
-      
-    // }else{
-    //   console.log("fail");
-    // }    
   } catch (e) {
     res.status(500).json({ error: e.message })
   }
@@ -152,21 +166,23 @@ app.get("/order/success", async (req, res) => {
 
   if(customer){
     // Send Mail to Customer : 
-    var customermail = {
-      from: process.env.domainemail,
-      to: customer.email,
-      subject: "Order Placed!",
-      html:
-      "<center>Thank you, your order has been placed</center>",
-    };
+    ejs.renderFile(__dirname + '/views/email/invoice.ejs',{infoForMail : infoForMail},function(err,str){
+      var customermail = {
+        from: process.env.domainemail,
+        to: customer.email,
+        subject: "Order Placed!",
+        html: str,
+      };
 
-    transporter.sendMail(customermail, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
+      transporter.sendMail(customermail, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+
+    })
 
     //update Cart
     
@@ -470,9 +486,7 @@ app.post("/addToCart",checkcookie,function (req, res) {
             size: data.imgSize,
             name: foundItem.name,
             price: price,
-            shipping: req.body.shipping,
           });
-          console.log(req.body.shipping);
           res.redirect("/images/"+foundItem.type+"/"+foundItem.name);
         }
       });
@@ -498,6 +512,7 @@ app.get("/cart", checkcookie, function (req, res) {
     res.render("emptyCart", { title: "Cart",});
   } else {
     console.log(req.session.cart);
+    console.log(req.session.shipping);
     ids = [];
     images = [];
     req.session.cart.forEach(function (item) {
