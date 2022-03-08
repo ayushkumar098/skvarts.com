@@ -119,7 +119,7 @@ app.post("/create-checkout-session",checkcookie, async (req, res) => {
     });
     res.redirect(session.url);
   } catch (e) {
-    res.status(500).json({ error: e.message })
+    // res.status(500).json({ error: e.message })
     res.redirect('/failure');
   }
 })
@@ -529,12 +529,16 @@ app.get("/cart", checkcookie, function (req, res) {
 // -----------Uploading Page---------//
 
 
-app.get("/verylongandsecureuploadingurlthatisverylong", function (req, res) {
+app.get("/galleryUpload", function (req, res) {
   imgModel.find({}, function (err, items) {
     if (err) {
       const cjdsn = 0;
     } else {
-      res.render("uploading", { items: items });
+      if(req.query.password && req.query.password == 'skvarts15'){
+        res.render("uploading", { items: items });
+      }else {
+        res.redirect('/');
+      }
     }
   });
 });
@@ -556,7 +560,7 @@ app.post("/verylongandsecureuploadingurlthatisverylong", upload.single("image"),
         const cjdsn = 0;
       } else {
         // item.save();
-        res.redirect("/verylongandsecureuploadingurlthatisverylong");
+        res.redirect("/galleryUpload?password=skvarts15");
       }
     });
   }
@@ -567,7 +571,7 @@ app.post("/delete", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.redirect("/verylongandsecureuploadingurlthatisverylong");
+      res.redirect("/galleryUpload?password=skvarts15");
       console.log("Delete Successful.");
     }
   });
@@ -582,7 +586,11 @@ app.get("/photoUpload",checkcookie, function (req, res) {
     if (err) {
       const cjdsn = 0;
     } else {
-      res.render("photoUpload", { items: items });
+      if(req.query.password && req.query.password == 'skvarts15'){
+        res.render("photoUpload", { items: items });
+      } else{
+        res.redirect('/');
+      }
     }
   });
 });
@@ -616,7 +624,7 @@ app.post("/photoUpload", upload.single("image"), function (req, res, next) {
         const cjdsn = 0;
       } else {
         // item.save();
-        res.redirect("/photoUpload");
+        res.redirect("/photoUpload?password=skvarts15");
       }
     });
   }
@@ -642,7 +650,7 @@ app.post("/deletePhoto",checkcookie, function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        res.redirect("/photoUpload");
+        res.redirect("/photoUpload?password=skvarts15");
         console.log("Delete Successful.");
       }
     });
@@ -653,7 +661,7 @@ app.post("/deletePhoto",checkcookie, function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        res.redirect("/photoUpload");
+        res.redirect("/photoUpload?password=skvarts15");
         console.log("Delete Successful.");
       }
     });
