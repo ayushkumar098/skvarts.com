@@ -114,8 +114,8 @@ app.post("/create-checkout-session",checkcookie, async (req, res) => {
         enabled: true,
       },
       mode: "payment",
-      success_url: `http://localhost:3000/order/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:3000/failure`,
+      success_url: `/order/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `/failure`,
     });
     res.redirect(session.url);
   } catch (e) {
