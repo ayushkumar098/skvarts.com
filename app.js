@@ -114,12 +114,12 @@ app.post("/create-checkout-session",checkcookie, async (req, res) => {
         enabled: true,
       },
       mode: "payment",
-      success_url: `/order/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `/failure`,
+      success_url: process.env.domain + `/order/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: process.env.domain + `/failure`,
     });
     res.redirect(session.url);
   } catch (e) {
-    // res.status(500).json({ error: e.message })
+    res.status(500).json({ error: e.message })
     res.redirect('/failure');
   }
 })
