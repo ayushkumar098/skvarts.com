@@ -15,7 +15,9 @@
                     <%}else{%>
                         <h2 class="view-img-price">C$ <%= image.priceInfo[0].price %> - C$ <%= image.priceInfo[1].price %></h2>
                     <%}%>
+                    <% if(image.cat == "oi"){ %>
                     <h3 class="view-img-cat" style="text-align: left;">Category: <%= image.cat %></h3>
+                    <%}%>
                     <label for="imgSize" id="img_size">SELECT SIZE</label>
                     <select name="imgSize" id="imgSize" required>
                         <% for(let i=0;i<4;i++){ %>
@@ -25,15 +27,6 @@
                         <% } %>
                     </select>
                     <p><%= image.desc %></p>
-                    <div class="flex-between">
-                        <h3 class="shipping">Shipping:</h2>
-                        <!-- <h3 class="shipping-charge">C$ 10.0</h2> -->
-                        <label for="shipping">Address</label>
-                        <select name="shipping" id="shipping">
-                            <option value="50">Canada</option>
-                            <option value="70">USA</option>
-                        </select>
-                    </div>
                 </div>
                 <% if(image.stock > 0){ %>
                 <div class="img-cart">   
@@ -51,16 +44,7 @@
     </div>   
     
 </section>
-                    
-                    <div class="flex-between">
-                        <h3 class="shipping">Shipping:</h2>
-                        <!-- <h3 class="shipping-charge">C$ 10.0</h2> -->
-                        <label for="shipping">Address</label>
-                        <select name="shipping" id="shipping">
-                            <option value="5000">Canada</option>
-                            <option value="7000">USA</option>
-                        </select>
-                    </div>
+
 <script>
       var addcart = document.querySelector('.img-cart button');
       var gocart = document.querySelector('.img-cart a');

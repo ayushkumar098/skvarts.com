@@ -170,7 +170,7 @@ nav .fa{
     font-family: 'Lexend Exa';
 }
 .line-split{
-    width: 50%;
+    width: 60%;
 }
 .items-title{
     margin: 1rem 0;
@@ -201,7 +201,7 @@ nav .fa{
     
 }
 .cart-checkout{
-    width: 45%;
+    width: 35%;
     height: auto;
     padding: 1rem;
     border-radius: 10px;
@@ -240,22 +240,32 @@ nav .fa{
     align-items: center;
     justify-content: center;
 }
+#pincode{
+    margin-top: 3px;
+    padding: 5px 20px;  
+    border-radius: 3px;
+    background: #d9d9d9;
+}
+
 .checkout-btn{
     border: 2px solid red;
     border-radius: 7px;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 2rem;
+    background: #f44336;
+    color: #fff;
     transition: all 0.3s ease-in;
+    font-size: large;
 }
 .check{
     letter-spacing: 2px;
     font-weight: bold;
 }
 .checkout-btn:hover{
-    background: #f44336;
+    background: none;
     transform: scale(1.1);
 }
 .checkout-btn:hover .check{
-    color: white;
+    color: black;
 }
 
 @media only screen and (max-width: 800px){

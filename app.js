@@ -7,7 +7,6 @@ const multer = require("multer");
 const session = require("express-session");
 const fs = require("fs");
 const path = require("path");
-// const _ = require("lodash")
 const dotenv = require("dotenv");
 dotenv.config() 
 
@@ -57,45 +56,26 @@ function checkcookie(req,res,next){
   }
 }
 
-//remove this 
-app.get("/invoice", checkcookie, function (req, res) {
-  res.render("email/invoice");
-});
 
-
-// app.post('/validate',function(req,res){
-//   var pincode = req.body.pincode;
-//   var us = new RegExp('^[0-9]{5}(?:[- ][0-9]{4})?$')
-//   var canada = new RegExp('^[A-Za-z][0-9][A-Za-z][ -]?[0-9][A-Za-z][0-9]$')
-//   // var canada = new RegExp('ab*');
-//   var localEdmonton = new RegExp('');
-//   if(pincode.match(us)){
-//     req.session.shipping = { country: "US", shippingCharge: 70000 };
-//   } else if (pincode.match(canada)){
-//     req.session.shipping  = {country : "CA", shippingCharge : 50000 };
-//   } else {
-//     req.session.shipping = {valid : false};
-//   }
-//   res.redirect('/cart');
-// });
-
-
-
-app.get("/create-checkout-session",checkcookie, async (req, res) => {
+app.post("/create-checkout-session",checkcookie, async (req, res) => {
   try {
-    //error handle
-    //
-    if(!req.session.cart || !req.session.shipping){
+    
+    if(!req.session.cart ){
       res.redirect('/cart');
     }
-
-
+    var pincode = req.body.pincode;
+    if(pincode == 'US'){
+      req.session.shipping = { country: "US", shippingCharge: 7000 };
+    } else if (pincode == "CA") {
+      req.session.shipping = { country: "CA", shippingCharge: 5000 };
+    }
+    
 
     var lineItems = [];
     req.session.cart.forEach((item) => {
       let data  = {
                     price_data: {
-                      currency: "inr",
+                      currency: "cad",
                       product_data: {
                         name: item.name,
                         description: item.type+" "+ item.size
@@ -111,7 +91,7 @@ app.get("/create-checkout-session",checkcookie, async (req, res) => {
           type: 'fixed_amount',
           fixed_amount: {
             amount: req.session.shipping.shippingCharge,
-            currency: 'inr',
+            currency: 'cad',
           },
           display_name: "Shipping Charge",
         }
@@ -140,6 +120,7 @@ app.get("/create-checkout-session",checkcookie, async (req, res) => {
     res.redirect(session.url);
   } catch (e) {
     res.status(500).json({ error: e.message })
+    res.redirect('/failure');
   }
 })
 
@@ -215,13 +196,9 @@ app.get("/order/success", async (req, res) => {
     })  
     req.session.cart = [];
     //res.render("success",{title : "Payment Successful",name : customer.name, id : customer.id,});
-    res.render("email/invoice", {
-      name: customer.name,
-      products: mycartcopy,
-      amount: paymentIntent.amount,
-      orderId: session.payment_intent,
-    });
+    res.render("confirm");
   }else{
+    console.log("fail");
     res.redirect("/");
   } 
 });
@@ -511,8 +488,8 @@ app.get("/cart", checkcookie, function (req, res) {
   if (req.session.cart == undefined || req.session.cart.length === 0) {
     res.render("emptyCart", { title: "Cart",});
   } else {
-    console.log(req.session.cart);
-    console.log(req.session.shipping);
+    // console.log(req.session.cart);
+    // console.log(req.session.shipping);
     ids = [];
     images = [];
     req.session.cart.forEach(function (item) {

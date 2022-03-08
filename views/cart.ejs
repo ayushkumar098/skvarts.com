@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,28 +81,29 @@
                 <% total = total + item.price;i++; %>
                 <% }) %>
                 <hr>
-                <div class="cart-total">
-                    <div class="flex-between">
-                        <h3 class="tax">Shipping:</h2>
-                        <h3 class="tax-charge">C$ <%= items[0].shipping%></h2>
+                <form action="/create-checkout-session" method="POST">
+                    <div class="cart-total">
+                        <div class="flex-between">
+                            <h3 class="tax">Shipping:</h2>
+                            <!-- <h3 class="tax-charge">C$ <%= items[0].shipping%></h2> -->
+                            <select name="pincode" id="pincode" onclick="fun()" required>
+                                <option value="" disabled selected>Select Country</option>
+                                <option value="US">USA</option>
+                                <option value="CA">CANADA</option>
+                            </select>
+                            <h3 id="shipping-charge" ></h3>
+                        </div>
+                        
+                        <div class="flex-between tot">
+                            <h2 class="total">Total</h2>
+                            <h2 class="total-charge">C$ <%= total %></h2>
+                        </div>
+                        <div class="checkout-items">
+                            <!-- <button class="checkout-btn"><span class="check">CHECKOUT</span></button> -->
+                            <button type="submit" id="btn-checkout" class="shopnow checkout-btn"><span class="check">Checkout</span></button>
+                        </div>
                     </div>
-                    
-                    <div class="flex-between tot">
-                        <h2 class="total">Total</h2>
-                        <h2 class="total-charge">C$ <%= total %></h2>
-                    </div>
-                    <div class="checkout-items">
-                        <a href="/create-checkout-session"><button id="btn-checkout" class="shopnow checkout-btn"><span class="check">Checkout</span></button></a>
-                        <!-- <button class="checkout-btn"><span class="check">CHECKOUT</span></button> -->
-                    </div>
-                    <form action="/validate" method="POST">
-                        <label for="pincode">pincode</label>
-                        <input type="text" name="pincode" id="pincode">
-                        <button type="submit">save</button>
-                    </form>
-                    
-                    
-                </div>
+                </form>
             </div>
         </div>
     </section>
@@ -118,6 +120,7 @@
     <script>
         var navLinks = document.getElementById("navLinks");
         var navsection = document.getElementsByClassName('sub-header-general')[0];
+        let t = document.querySelector(".total-charge");
     
         function showMenu() {
             navLinks.style.right = "0";
@@ -128,6 +131,24 @@
             navLinks.style.right = "-250px";
             setTimeout('navsection.style.overflow = "hidden";', 1000);
         }
+
+        function fun(){
+            var pin = document.getElementById("pincode");
+            const s = document.getElementById("shipping-charge");
+            if(pin.value == 'US'){
+                s.innerHTML = 'C$ 70';
+            }else if(pin.value == 'CA'){
+                const s = document.getElementById("shipping-charge");
+                s.innerHTML = 'C$ 50';
+            }
+
+            var tots = <%= total %> + parseInt(s.innerHTML.slice(3));
+            console.log(tots);
+            t.innerHTML = 'C$ ' + tots;
+        }
+
+            
     </script>
 </body>
 </html>
+                            <!-- <a href="/create-checkout-session"><button id="btn-checkout" class="shopnow checkout-btn"><span class="check">Checkout</span></button></a> -->
