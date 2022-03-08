@@ -57,7 +57,9 @@ function checkcookie(req,res,next){
   }
 }
 
-
+app.get("/invoice", checkcookie, function (req, res) {
+  res.render("email/invoice");
+});
 
 app.get("/create-checkout-session",checkcookie, async (req, res) => {
   try {
@@ -71,12 +73,31 @@ app.get("/create-checkout-session",checkcookie, async (req, res) => {
                         name: item.name,
                         description: item.type+" "+ item.size
                       },
-                      unit_amount: item.price+"00",
+                      unit_amount: item.price* 100,
                     },
                     quantity: 1,
                   }
       lineItems.push(data);
     });
+
+    const shipping = {
+          type: 'fixed_amount',
+          fixed_amount: {
+            amount: req.session.cart[0].shipping + "00",
+            currency: 'inr',
+          },
+          display_name: 'Free Shipping',
+          delivery_estimate: {
+            minimum: {
+              unit: 'business_day',
+              value: 5,
+            },
+            maximum: {
+              unit: 'business_day',
+              value: 7,
+            },
+          }
+        }
 
     // Create a checkout session with Stripe
     const session = await stripe.checkout.sessions.create({
@@ -84,28 +105,53 @@ app.get("/create-checkout-session",checkcookie, async (req, res) => {
       shipping_address_collection: {
         allowed_countries: ["US", "CA", "IN"],
       },
+      shipping_options: [
+      {
+        shipping_rate_data: shipping,
+      }
+    ],
       line_items: lineItems,
       phone_number_collection: {
         enabled: true,
       },
       mode: "payment",
       success_url: `http://localhost:3000/order/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:3000/faliure`,
+      cancel_url: `http://localhost:3000/failure`,
     });
     res.redirect(session.url);
+    // if(shipping_options.shipping_rate_data.display_name == shipping_address_collection.allowed_countries[0]){
+      
+    // }else{
+    //   console.log("fail");
+    // }    
   } catch (e) {
     res.status(500).json({ error: e.message })
   }
 })
 
 
+
 app.get("/order/success", async (req, res) => {
   const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
   const customer = await stripe.customers.retrieve(session.customer);
+  const paymentIntent = await stripe.paymentIntents.retrieve(
+    session.payment_intent
+  );
+
+  var mycartcopy = req.session.cart;
+  
+  //Name, Order Number, Product Details,Date,shipping address
+  var infoForMail = {
+    name: customer.name,
+    products: mycartcopy,
+    amount: paymentIntent.amount,
+    orderId: session.payment_intent,
+  }
+
+  //console.log(infoForMail);
 
   if(customer){
     // Send Mail to Customer : 
-    //
     var customermail = {
       from: process.env.domainemail,
       to: customer.email,
@@ -122,10 +168,8 @@ app.get("/order/success", async (req, res) => {
       }
     });
 
-
     //update Cart
-    //
-    var mycartcopy = req.session.cart;
+    
     mycartcopy.forEach(function(item){
     
       if(item.type == 'original'){
@@ -154,17 +198,26 @@ app.get("/order/success", async (req, res) => {
       }
     })  
     req.session.cart = [];
-    res.render("success",{title : "Payment Successful",name : customer.name, id : customer.id});
-    
+    //res.render("success",{title : "Payment Successful",name : customer.name, id : customer.id,});
+    res.render("email/invoice", {
+      name: customer.name,
+      products: mycartcopy,
+      amount: paymentIntent.amount,
+      orderId: session.payment_intent,
+    });
   }else{
     res.redirect("/");
   } 
 });
 
+app.get("/failure", function (req, res) {
+  res.render("failure", { title: "Payment Fail" });
+});
 
-  app.get("/", checkcookie, function (req, res) {
-    res.render("index");
-  });
+
+app.get("/", checkcookie, function (req, res) {
+  res.render("index");
+});
 
 app.get("/about",checkcookie, function (req, res) {
   res.render("about",{ title: "About"});
@@ -225,27 +278,12 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
     desc: req.body.desc,
   };
 
-  
-
   ejs.renderFile(__dirname + '/views/email/orderMail.ejs',{orderContent : orderContent},function(err,str){
     var selfmail = {
       from: process.env.domainemail,
       to: process.env.email,
       subject: `New commisioned Artwork by ${orderContent.name}`,
       html: str,
-      // "<h1>Order Details</h1><h2>Name: " +
-      // orderContent.name +
-      // "</h2><h2>Phone Number:" +
-      // orderContent.phno +
-      // "</h2><h2>Email:" +
-      // orderContent.addr +
-      // "</h2><h2>Paint Type:" +
-      // orderContent.paint +
-      // "</h2><h2>Canva Size:" +
-      // orderContent.canvaSize +
-      // "</h2><h2>Description:" +
-      // orderContent.desc,
-
       attachments: [
         {
           filename: req.file.originalname,
@@ -263,7 +301,6 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
         console.log("Email sent: " + info.response);
       }
     });
-
   })
 
   var customermail = {
@@ -280,7 +317,7 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
       // console.log(error);
     } else {
       console.log("Email sent: " + info.response);
-      res.redirect("/");
+      res.redirect("/confirm");
     }
   });
 
@@ -324,7 +361,7 @@ app.get("/shops/original",checkcookie, function(req,res){
       } else {
         res.render("origShop", { title: "Original", items: foundItems });
       }
-    }).sort({ originalStock: 1 });
+    }).sort({ stock: -1 });
 
 });
 
@@ -336,7 +373,7 @@ app.get("/shops/print",checkcookie, function (req, res) {
         res.render("printShop", { title: "Print", items: foundItems });
       }
     })
-    .sort({ printStock: 1 });
+    .sort({ stock: -1 });
   
 });
 
@@ -406,7 +443,7 @@ app.post("/addToCart",checkcookie,function (req, res) {
   let data = req.body; //{id,size}
   var foundItem;
   var price;
-  console.log(data);
+  //console.log(data);
   printModel.find({ _id: data.id }, function (err, foundPrint) {
     if (err) {
       console.log(err);
@@ -433,7 +470,9 @@ app.post("/addToCart",checkcookie,function (req, res) {
             size: data.imgSize,
             name: foundItem.name,
             price: price,
+            shipping: req.body.shipping,
           });
+          console.log(req.body.shipping);
           res.redirect("/images/"+foundItem.type+"/"+foundItem.name);
         }
       });
@@ -640,3 +679,4 @@ app.get("/error", checkcookie, function (req, res) {
 app.listen(process.env.PORT || 3000, function(){
     console.log("Server started on port " + process.env.PORT);
 })
+

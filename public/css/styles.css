@@ -51,7 +51,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
 /* used in home page */
-@import url('https://fonts.googleapis.com/css2?family=Lexend+Exa&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@300&display=swap');
 /* Used in acrt Heading */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC&display=swap');
 *{
@@ -1020,7 +1020,7 @@ h3{
     border: 2px solid black;
 }
 .img-desc h1{
-    font-family: 'Lexend Exa';
+    font-family: 'Lexend Exa', sans-serif;
     font-weight: bold;
     font-size: xxx-large;
     color: red;

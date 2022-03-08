@@ -1,1 +1,25 @@
-<h1>Rayment Fail</h1>
+<%- include("partials/header", {title: title }); -%>
+<head>
+    <style>
+        h1 {
+            
+            font-size: 2.5rem;
+        }
+        .txt{
+            padding:30vh 0 30vh 40%;
+        }
+        button{
+            padding: 10px 30px ;
+            background-color: #f33446;
+            border: none;
+            outline: none;
+            margin-left: 9%;
+        }
+    </style>
+</head>
+<section>
+    <div class="txt"><h1>Payment Failed</h1>
+    <button><a href="/shopCategory">Try Again</a></button>
+    </div>
+</section>
+<%- include('partials/footer'); -%>

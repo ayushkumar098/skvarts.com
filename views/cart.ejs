@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@300&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/newcart.css">
     <title>Cart</title>
@@ -20,6 +25,7 @@
                     <li><a href="/category">GALLERY</a></li>
                     <li><a href="/shopCategory">SHOP</a></li>
                     <li><a href="/order">ORDER</a></li>
+                    <li><a href="/cart">CART</a></li>
                 </ul>
             </div>
             <i class="fa fa-bars" onclick="showMenu()"></i>
@@ -33,14 +39,24 @@
         <div class="cart-whole flex-between">
        
             <div class="line-split">
-                <h2 class="items-title">ITEMS</h2>
+                
+                <div class="cart-orders">
+                    <h2 class="items-title">ITEM</h2>
+                    <h2 class="items-title">NAME</h2>
+                    <h2 class="items-title">PRICE</h2>
+                    <h2 class="items-title">TYPE</h2>
+                    <h2 class="items-title"></h2>
+                    
+                </div>
+                <hr>
                 <% items.forEach(function(item){ %>
                 <div class="cart-orders">
                     <img src="data:image/<%=images.find(o => o.id === item.id).image.contentType%>;base64,
                         <%=images.find(o => o.id === item.id).image.data.toString('base64')%>">
                     <h2 class="cart-item-name"><%= item.name %></h2>
                     <h2 class="cart-item-price">C$<%= item.price %></h2>
-                    <h2 class="cart-item-quantity">1</h2>
+                    <h2 class="cart-item-price"><%= item.type %></h2>
+                    <!-- <h2 class="cart-item-quantity">1</h2> -->
                     <form action="/deletefromcart" method="POST" >
                         <button class="remove-cart-item" id="<%= item.id %>" type="submit" name="id" value="<%= item.id %>"><i class="fa fa-trash"></i></button>
                     </form>
@@ -53,26 +69,23 @@
                 <div class="summary-title">
                     <h2>Order Summary</h2>
                 </div>
-                <% let total = 0; %>
+                <% let total = 0,i = 1; %>
                 <% items.forEach(function(item){ %>
                 <div class="cart-item">
-                    <h3 class="cart-item-num">1.</h3>
+                    <h3 class="cart-item-num"><%= i %>.</h3>
                     <h3 class="cart-item-name"><%= item.name %></h2>
-                    <h3 class="cart-item-quantity">x1</h2>
+                    <!-- <h3 class="cart-item-quantity">x1</h2> -->
                     <h3 class="cart-item-price">C$<%= item.price %></h2>
                 </div>
-                <% total = total + item.price; %>
+                <% total = total + item.price;i++; %>
                 <% }) %>
                 <hr>
                 <div class="cart-total">
                     <div class="flex-between">
-                        <h3 class="tax">Tax:</h2>
-                        <h3 class="tax-charge">C$ 2.90</h2>
+                        <h3 class="tax">Shipping:</h2>
+                        <h3 class="tax-charge">C$ <%= items[0].shipping%></h2>
                     </div>
-                    <div class="flex-between">
-                        <h3 class="shipping">Shipping:</h2>
-                        <h3 class="shipping-charge">C$ 10.0</h2>
-                    </div>
+                    
                     <div class="flex-between tot">
                         <h2 class="total">Total</h2>
                         <h2 class="total-charge">C$ <%= total %></h2>

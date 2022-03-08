@@ -25,6 +25,15 @@
                         <% } %>
                     </select>
                     <p><%= image.desc %></p>
+                    <div class="flex-between">
+                        <h3 class="shipping">Shipping:</h2>
+                        <!-- <h3 class="shipping-charge">C$ 10.0</h2> -->
+                        <label for="shipping">Address</label>
+                        <select name="shipping" id="shipping">
+                            <option value="50">Canada</option>
+                            <option value="70">USA</option>
+                        </select>
+                    </div>
                 </div>
                 <% if(image.stock > 0){ %>
                 <div class="img-cart">   
@@ -39,12 +48,19 @@
                 <%}%>
             </form>
         </div>
-        
-    </div>
-    
+    </div>   
     
 </section>
-
+                    
+                    <div class="flex-between">
+                        <h3 class="shipping">Shipping:</h2>
+                        <!-- <h3 class="shipping-charge">C$ 10.0</h2> -->
+                        <label for="shipping">Address</label>
+                        <select name="shipping" id="shipping">
+                            <option value="5000">Canada</option>
+                            <option value="7000">USA</option>
+                        </select>
+                    </div>
 <script>
       var addcart = document.querySelector('.img-cart button');
       var gocart = document.querySelector('.img-cart a');
