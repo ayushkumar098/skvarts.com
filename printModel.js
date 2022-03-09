@@ -7,6 +7,7 @@ const printSchema = new mongoose.Schema({
   stock: Number,
   priceInfo: [{ price: Number, size: String }],
   desc: String,
+  priority: Number,
   img: {
     data: Buffer,
     contentType: String,

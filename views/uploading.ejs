@@ -22,7 +22,6 @@
             <div>
                 <label for="name">Image Title</label>
                 <input type="text" id="name" placeholder="Name" name="name" required>
-                <p>The name should be of one word only</p>
             </div>
             <div>
                 <label for="cat">Image Catogery</label>
@@ -31,6 +30,10 @@
                     <option value="color">Color Pencil</option>
                     <option value="graphite">Graphite & Charcoal</option>
                 </select>
+            </div>
+            <div>
+                <label for="size">Image Title</label>
+                <input type="text" id="size" placeholder="Size" name="size" required>
             </div>
             
             <div>
@@ -71,8 +74,7 @@
                     <h5> <%= i %></h5>
                     <h5 style="padding-left:10px;" ><%= image.name %></h5>
                     <h5 style="padding-left:10px;"><%= image.cat %></h5>
-                    <h5 style="padding-left:10px;"><%= image.price %></h5>
-                    <h5 style="padding-left:10px;"><%= image.stock %></h5>
+                    <h5 style="padding-left:10px;"><%= image.size %></h5>
                 </div>
         <% }) %>
     </div>

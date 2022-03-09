@@ -348,25 +348,26 @@ app.get("/gallerys/:galleryName",checkcookie, function (req, res) {
 
 
 app.get("/shops/original",checkcookie, function(req,res){
-  originalModel.find({}, function (err, foundItems) {
+  originalModel
+    .find({}, function (err, foundItems) {
       if (err) {
         console.log(err);
       } else {
         res.render("origShop", { title: "Original", items: foundItems });
       }
-    }).sort({ stock: -1 });
+    }).sort({ stock: -1 }).sort({ priority: 1 });
 
 });
 
 app.get("/shops/print",checkcookie, function (req, res) {
-  printModel.find({}, function (err, foundItems) {
+  printModel
+    .find({}, function (err, foundItems) {
       if (err) {
         console.log(err);
       } else {
         res.render("printShop", { title: "Print", items: foundItems });
       }
-    })
-    .sort({ stock: -1 });
+    }).sort({ stock: -1 }).sort({ priority: 1 });
   
 });
 
@@ -547,6 +548,7 @@ app.post("/verylongandsecureuploadingurlthatisverylong", upload.single("image"),
     let obj = {
       name: req.body.name,
       cat: req.body.cat,
+      size: req.body.size,
       img: {
         data: fs.readFileSync(
           path.join(__dirname + "/public/uploads/" + req.file.filename)
@@ -559,7 +561,6 @@ app.post("/verylongandsecureuploadingurlthatisverylong", upload.single("image"),
       if (err) {
         const cjdsn = 0;
       } else {
-        // item.save();
         res.redirect("/galleryUpload?password=skvarts15");
       }
     });
@@ -600,6 +601,7 @@ app.post("/photoUpload", upload.single("image"), function (req, res, next) {
     name: req.body.name,
     cat: req.body.cat,
     type: req.body.type,
+    priority: req.body.priority,
     stock: req.body.stock,
     priceInfo: [
       { price: req.body.price1, size: req.body.size1 },

@@ -37,6 +37,22 @@
                     <option value="print">Print</option>
                 </select>
             </div>
+
+            <div>
+                <label for="priority">Image Type</label>
+                <select name="priority" id="priority" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="19">10</option>
+                </select>
+            </div>
             
             <div>
                 <label for="stock">Stock</label>
@@ -108,6 +124,7 @@
                     <h5 style="padding-left:10px;"><%= image.cat %></h5>
                     <h5 style="padding-left:10px;"><%= image.price %></h5>
                     <h5 style="padding-left:10px;"><%= image.stock %></h5>
+                    <h5 style="padding-left:10px;"><%= image.priority %></h5>
                 </div>
         <% }) %>
     </div>
