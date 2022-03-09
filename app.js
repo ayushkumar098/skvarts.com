@@ -10,7 +10,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config() 
 
-const Publishable_Key = process.env.Publishable_Key;
+const Publishabe_Key = process.env.Publishable_Key;
 const Secret_Key = process.env.Secret_Key;
 
 const stripe = require("stripe")(Secret_Key);
@@ -134,14 +134,23 @@ app.get("/order/success", async (req, res) => {
   );
 
   var mycartcopy = req.session.cart;
-  
+  console.log(mycartcopy);
+  //Date Calculator
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = mm + '/' + dd + '/' + yyyy;
+
   //Name, Order Number, Product Details,Date,shipping address
   var infoForMail = {
+    date: today,
     name: customer.name,
     products: mycartcopy,
     amount: paymentIntent.amount,
     orderId: session.payment_intent,
-  }
+  };
 
   //console.log(infoForMail);
 
@@ -195,7 +204,10 @@ app.get("/order/success", async (req, res) => {
       }
     })  
     req.session.cart = [];
-    //res.render("success",{title : "Payment Successful",name : customer.name, id : customer.id,});
+    // res.render("email/invoice", {
+    //   title: "Payment Successful",
+    //   infoForMail: infoForMail,
+    // });
     res.render("confirm");
   }else{
     console.log("fail");

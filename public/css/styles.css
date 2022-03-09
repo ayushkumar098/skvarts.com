@@ -420,6 +420,7 @@ h3{
 
 .shopSection{
     background-color: #fff;
+    
 }
 
 .container{
@@ -1082,20 +1083,15 @@ h3{
     .img-view{
         background-color: #fff;
     }
-}
-@media only screen and (max-width: 425px){
-    .img-view img{
-        width: 17rem;
-        height: auto;
+    .img-details{
+        justify-content: center;
+        width: 100%;
     }
-    .img-view{
-        background-color: #fff;
-    }
-}
-@media only screen and (max-width: 375px){
-    .img-view img{
-        width: 15rem;
-        height: auto;
+    .img-desc{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     .img-desc h1{
         font-size: xx-large;
@@ -1106,8 +1102,51 @@ h3{
     .img-desc p{
         font-size: larger;
     }
+    
+}
+@media only screen and (max-width: 525px){
+    .img-view img{
+        width: 17rem;
+        height: auto;
+    }
     .img-view{
         background-color: #fff;
+    }
+    .img-desc h1{
+        font-size: x-large;
+    }
+    .img-desc h2{
+        font-size: larger;
+    }
+    .img-desc p{
+        font-size: large;
+    }
+    .img-cart button{
+        padding: 0 2rem;
+    }
+    .img-cart>button h3{
+        font-size: 90%;
+    }
+}
+@media only screen and (max-width: 430px){
+    .img-view img{
+        width: 15rem;
+        height: auto;
+    }
+    .img-desc h1{
+        font-size: 20px;
+    }
+    .img-desc h2{
+        font-size: 18px;
+    }
+    .img-desc p{
+        font-size: 16px;
+    }
+    .img-cart button{
+        padding: 0 2rem;
+    }
+    .img-cart>button h3{
+        font-size: 80%;
     }
 
 }
