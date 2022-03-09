@@ -9,18 +9,18 @@
             <form action="/order" method="POST" enctype="multipart/form-data"c class="order-form">
                 <div class="form-input">
                     <label for="name">NAME</label>
-                    <input class="filed" type="text" id="name" name="name" placeholder=' Full Name'>
+                    <input class="filed" type="text" id="name" name="name" placeholder=' Your Full Name'>
                 </div>
 
                 <div class="form-input">
                     <label for="phno">PHONE NUMBER</label>
-                    <input class="filed" type="text" id="phno" name="phno" placeholder=' Whatsapp Number'>
+                    <input class="filed" type="text" id="phno" name="phno" placeholder=' Contact Number'>
                 </div>
 
 
                 <div class="form-input">
                     <label for="addr">E-MAIL ADDRESS</label>
-                    <input class="filed" type="text" id="addr" name="addr" placeholder=' E-mail Address'>
+                    <input class="filed" type="text" id="addr" name="addr" placeholder=' Your E-mail Address'>
                 </div>
 
 
@@ -29,9 +29,9 @@
                     <select class="field" name="paint" id="styles" place>
                         <option value="null">--Select Style--</option>
                         <option value="oil">Oil Painting</option>
-                        <option value="sketch">Sketch</option>
-                        <option value="bw">Black n White</option>
-                        <option value="abs">Abstract</option>
+                        <option value="sketch">Color Pencil</option>
+                        <option value="bw">Graphite & Charcoal</option>
+                        <option value="abs">Scenery</option>
                     </select>
                 </div>
 
@@ -42,6 +42,10 @@
                         <div class="size-a4">A4 <input class="input-a4" type="hidden" name="" value="a4"></div>
                         <div class="size-a3">A3 <input class="input-a3" type="hidden" name="" value="a4"></div>
                     </div>
+                </div>
+                <div class="warn">
+                    <div class="notes"></div>
+                    <div class="img-refer"></div>
                 </div>
 
 
@@ -71,6 +75,12 @@
         var canvaa4 = document.getElementsByClassName('size-a4')[0];
         var a4input = document.getElementsByClassName('input-a4')[0];
         var a3input = document.getElementsByClassName('input-a3')[0];
+        let warns = document.querySelector('.warn');
+        let note = document.querySelector('.notes');
+        let img_refer = document.querySelector('.img-refer');
+        let warnH = document.createElement('h3');
+        let referimg = document.createElement('img');
+        let imgcap = document.createElement('h3');
 
         canvaa3.addEventListener('click', () => {
             canvaa3.style.borderColor = "#f44336";
@@ -94,14 +104,54 @@
             a3input.removeAttribute('name');
         })
 
-        select.addEventListener('click', () => {
+        select.addEventListener('change', () => {
+            note.style.border = 'none';
             if (select.value == "null") {
                 canvas.style.display = "none";
-            } else {
-                canvas.style.display = "flex";
             }
+            else if(select.value == "oil"){
+                
+                warnH.innerHTML = "<b>Note:</b> PRICE = (per square inch) x 5<br>(<i>The prices may vary with the level of details and number of persons in the picture. You will be notified about final price via e-mail</i>)";
+                note.style.border = '2px solid red';
+                imgcap.innerHTML = "<u>Sizes for Reference</u>";
+                referimg.src = "images/paper_size.jpeg";
+
+            }
+            else if(select.value == "sketch"){
+                
+                canvas.style.display = "flex";
+                warnH.innerHTML = "<b>Note:</b> PRICE = (per square inch) x 3<br>(<i>The prices may vary with the level of details and number of persons in the picture. You will be notified about final price via e-mail</i>)";
+                note.style.border = '2px solid red';
+                imgcap.innerHTML = "<u>Sizes for Reference</u>";
+                referimg.src = "images/img_wall.jpeg";
+
+            }
+            else if(select.value == "bw"){
+                
+                canvas.style.display = "flex";
+                warnH.innerHTML = "<b>Note:</b> PRICE = (per square inch) x 2<br>(<i>The prices may vary with the level of details and number of persons in the picture. You will be notified about final price via e-mail</i>)";
+                note.style.border = '2px solid red';
+                imgcap.innerHTML = "<u>Sizes for Reference</u>";
+                referimg.src = "images/img_wall.jpeg";
+
+            }
+            else if(select.value == "abs"){
+                
+                warnH.innerHTML = "<b>Note:</b> PRICE = (per square inch) x 4<br>(<i>The prices may vary with the level of details and number of persons in the picture. You will be notified about final price via e-mail</i>)";
+                note.style.border = '2px solid red';
+                imgcap.innerHTML = "<u>Sizes for Reference</u>";
+                referimg.src = "images/paper_size.jpeg";
+
+            }   
+            warnH.style.textAlign = 'center';
+            imgcap.style.marginBottom = '10px';
+            note.appendChild(warnH);
+            img_refer.appendChild(imgcap);
+            img_refer.appendChild(referimg);
 
         })
+
+        
         var navLinks = document.getElementById("navLinks");
         var navsection = document.getElementsByClassName('sub-header-general')[0];
 

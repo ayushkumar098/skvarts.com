@@ -243,23 +243,17 @@ nav .fa{
     height:100%;
     width:100%;
     display: block;
+    /* object-fit: cover; */
     /* border-radius: 15px; */
     
 }
-/* .campus-col::after{
-    content: "";
-    position: absolute;
-    top: 80px;
-    white-space: pre;
-    right: 15px;
-    height: fit-content;
-    width: 100%;
-    background: #e95ba983;
-} */
+.layer p{
+    padding: 0 10px;
+}
 
 .campus-col:hover .layer{
     background: rgba(226,0,0,0.7);
-    height: 40%;
+    height: 50%;
 }
 
 
@@ -302,7 +296,7 @@ h3{
         margin: 10%;
     }
     .layer{
-        bottom: 1%;
+        bottom: 0;
         height: 11%;
         padding: 0%;
     }
@@ -313,7 +307,7 @@ h3{
     height: 90%;
     }
     .layer{
-        bottom: 1%;
+        bottom: 0;
         height: 12%;
         padding: 0%;
     }
@@ -573,6 +567,11 @@ h3{
     background-color: black;
     margin: 0;
 }
+.contCat > .heading > #title{
+    font-size: 7em;
+    font-weight: 500;
+    font-family: 'PlaylistScript';
+}
 
 .catogeries{
     display: flex;
@@ -625,6 +624,12 @@ h3{
     height: 30rem;
     padding: 0;
     transform: translate(-35px,-35px);
+}
+#L img{
+    object-fit: contain;
+}
+#L2 img{
+    object-fit: cover;
 }
 
 #R img{
@@ -704,7 +709,7 @@ h3{
 
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 769px) {
 
     .catogeries{
         margin-left: 20px;
@@ -715,7 +720,10 @@ h3{
         padding: 30px 10px;
         
     }
-
+    .contCat .heading #title{
+        font-size: 4em;
+        font-family: 'PlaylistScript' !important;
+    }
 
     .img-box{
         width: 12rem;
@@ -766,7 +774,12 @@ h3{
     .catogry{
         flex-direction: column;
         padding: 30px 10px;
-       
+    }
+    .contCat .heading #title{
+        font-size: 3.5em;
+    }
+    .contCat .heading #subtitle{
+        font-size: 1.9em;
     }
     .img-box{
         width: 15rem;
@@ -908,6 +921,22 @@ h3{
     cursor: pointer;
     
 }
+.warn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+}
+.img-refer{
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+.img-refer img{
+    width: 90%;
+    height: auto;
+}
 
 #button{
     font-family: 'Lexend Exa';
@@ -973,6 +1002,9 @@ h3{
     #button{
     width: 40%;
     margin: 5% 30%;
+    }
+    .warn h3{
+        font-size: 16px;
     }
 }
 /* -----------------------------Image Viewer------------------------- */
@@ -1086,6 +1118,11 @@ h3{
     .img-details{
         justify-content: center;
         width: 100%;
+        position: relative;
+    }
+    .img-details form{
+        position: relative;
+        left: -5%;
     }
     .img-desc{
         display: flex;
@@ -1224,6 +1261,7 @@ h3{
 .shop-img img{
     width: inherit;
     height: inherit;
+    object-fit: cover;
     transition: transform 0.5s ease;
 }
 .shop-cat-heading{
