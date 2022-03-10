@@ -75,7 +75,7 @@ app.post("/create-checkout-session",checkcookie, async (req, res) => {
     req.session.cart.forEach((item) => {
       let data  = {
                     price_data: {
-                      currency: "inr",
+                      currency: "cad",
                       product_data: {
                         name: item.name,
                         description: item.type+" "+ item.size
@@ -91,7 +91,7 @@ app.post("/create-checkout-session",checkcookie, async (req, res) => {
           type: 'fixed_amount',
           fixed_amount: {
             amount: req.session.shipping.shippingCharge,
-            currency: 'inr',
+            currency: 'cad',
           },
           display_name: "Shipping Charge",
         }
