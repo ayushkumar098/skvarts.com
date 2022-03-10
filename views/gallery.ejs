@@ -45,7 +45,7 @@
                 <% while(n < items.length){ %>
                 <div class="photo">
                      <a href="data:image/<%=items[n].img.contentType%>;base64,
-                        <%=items[n].img.data.toString('base64')%>" data-lightbox="mygallery" data-title="<%= items[n].name %> <%= items[n].size %>">   
+                         <%=items[n].img.data.toString('base64')%>" data-lightbox="mygallery" data-title="<%= items[n].name %><br><%= items[n].size %>">   
                      <img  src="data:image/<%=items[n].img.contentType%>;base64,
                      <%=items[n].img.data.toString('base64')%>">
                      </a>  
