@@ -4,6 +4,7 @@ const imageSchema = new mongoose.Schema({
   name: String,
   cat: String,
   size: String,
+  priority: Number,
   img: {
     data: Buffer,
     contentType: String,

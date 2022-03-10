@@ -282,7 +282,7 @@ app.post("/order",upload.single("profile-file"), function(req, res, next){
     img: req.file,
     desc: req.body.desc,
   };
-
+  console.log(req.body.selected);
   ejs.renderFile(__dirname + '/views/email/orderMail.ejs',{orderContent : orderContent},function(err,str){
     var selfmail = {
       from: process.env.domainemail,
@@ -351,7 +351,7 @@ app.get("/gallerys/:galleryName",checkcookie, function (req, res) {
           res.render("gallery", { title: gallery.title,subtitle: gallery.subtitle, items: foundItems});
         }
       }
-    });
+    }).sort({ priority: -1 });
   });
 });
 
@@ -561,6 +561,7 @@ app.post("/verylongandsecureuploadingurlthatisverylong", upload.single("image"),
       name: req.body.name,
       cat: req.body.cat,
       size: req.body.size,
+      priority: req.body.priority,
       img: {
         data: fs.readFileSync(
           path.join(__dirname + "/public/uploads/" + req.file.filename)
@@ -595,17 +596,31 @@ app.post("/delete", function (req, res) {
 
 
 app.get("/photoUpload",checkcookie, function (req, res) {
-  originalModel.find({}, function (err, items) {
-    if (err) {
-      const cjdsn = 0;
-    } else {
-      if(req.query.password && req.query.password == 'skvarts15'){
-        res.render("photoUpload", { items: items });
-      } else{
-        res.redirect('/');
-      }
+  let items = [];
+  printModel.find({},function (error, printItems) {
+    if (error) {
+      res.render("404",{title:"Error"});
+    }else{
+      originalModel.find({}, function (err, originalItems) {
+        if (err) {
+          res.render("404",{title:"Error"});
+        } else {
+          originalItems.forEach(function (item) {
+            items.push(item);
+          });
+          printItems.forEach(function (item) {
+            items.push(item);
+          });
+          if(req.query.password && req.query.password == 'skvarts15'){
+            res.render("photoUpload", { items: items });
+          } else{
+            res.redirect('/');
+          }
+        }
+      });
     }
-  });
+  })
+  
 });
 
 app.post("/photoUpload", upload.single("image"), function (req, res, next) {
@@ -649,7 +664,7 @@ app.post("/photoUpload", upload.single("image"), function (req, res, next) {
         const cjdsn = 0;
       } else {
         // item.save();
-        res.redirect("/photoUpload");
+        res.redirect("/photoUpload?password=skvarts15");
       }
     });
   }

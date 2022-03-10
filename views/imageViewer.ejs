@@ -18,6 +18,7 @@
                     <% if(image.cat == "oi"){ %>
                     <h3 class="view-img-cat" style="text-align: left;">Category: <%= image.cat %></h3>
                     <%}%>
+                    <% if(image.type == 'print'){ %> 
                     <label for="imgSize" id="img_size">SELECT SIZE</label>
                     <select name="imgSize" id="imgSize" required>
                         <% for(let i=0;i<4;i++){ %>
@@ -26,6 +27,12 @@
                             <% } %>
                         <% } %>
                     </select>
+                    <% } else{ %>
+                        <h3 style="text-align: left;"><%= image.priceInfo[0].size %> </h3>
+                        <select name="imgSize" id="imgSize" required hidden>
+                            <option value="<%= image.priceInfo[0].size %>"><%= image.priceInfo[0].size %> - C$<%= image.priceInfo[0].price %></option>
+                        </select>
+                    <% } %> 
                     <p><%= image.desc %></p>
                 </div>
                 <% if(image.stock > 0){ %>
@@ -62,6 +69,8 @@
                 cart.style.background = 'none';
             })
       }
+      var size_label = document.querySelector('#img_size');
+      var size_select = document.querySelector('#imgSize');
 </script>
 
 <%- include('partials/footer'); -%>
