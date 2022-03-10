@@ -1,6 +1,12 @@
 <%- include("partials/header", {title: title }); -%>
 <head>
     <style>
+        section{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
         h1 {
             
             font-size: 2.5rem;
@@ -14,7 +20,7 @@
             color: azure;
             border: none;
             outline: none;
-            margin-left: 9%;
+            /* margin-left: 9%; */
         }
         @media(max-width: 700px) {
             h1{
