@@ -916,10 +916,19 @@ h3{
 .size-a3, .size-a4{
     border: 2px solid black;
     padding: 0 1.3rem;
-    margin-left: 3rem;
     border-radius: 10%;
     cursor: pointer;
     
+}
+.size-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 3rem;
+}
+.size-details p{
+    margin-top: 10px;
+    font-size: small;
 }
 .warn{
     display: flex;
@@ -958,7 +967,7 @@ h3{
   color: #fff;
 }
 
-@media(max-width: 700px){
+@media only screen and (max-width: 700px){
 
     .head{
         padding-top: 8%;
@@ -1005,6 +1014,14 @@ h3{
     }
     .warn h3{
         font-size: 16px;
+    }
+}
+@media only screen and (max-width: 400px){
+    .can-size{
+        flex-direction: column !important;
+    }
+    .size-details{
+        margin-bottom: 1rem;
     }
 }
 /* -----------------------------Image Viewer------------------------- */

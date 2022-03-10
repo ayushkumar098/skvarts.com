@@ -39,8 +39,25 @@
                 <div class="form-input CANVAS">
                     <label for="size">CANVAS SIZE</label>
                     <div class="can-size">
-                        <div class="size-a4">A4 <input class="input-a4" type="hidden" name="" value="a4"></div>
-                        <div class="size-a3">A3 <input class="input-a3" type="hidden" name="" value="a4"></div>
+                        <div class="size-details">
+                            <div class="size-a4">A4 <input class="input-a4" type="hidden" name="" value="a4"></div>
+                            <p>(9"x12")</p>
+                        </div>
+                        <div class="size-details">
+                            <div class="size-a3">A3 <input class="input-a3" type="hidden" name="" value="a4"></div>
+                            <p>(11-3/4" x 16-1/4")</p>
+                        </div>
+                    </div>
+                    <div class="size-options">
+                        <select class="sizes" name="selected" id="sizes-drop" place>
+                            <option value="null" disabled selected>--Select Size--</option>
+                            <option value="8x10">8"x10" </option>
+                            <option value="11x14">11"x14" </option>
+                            <option value="12x16">12"x16"</option>
+                            <option value="16x20">16"x20"</option>
+                            <option value="18x24">18"x24"</option>
+                            <option value="24x36">24"x36"</option>
+                        </select>
                     </div>
                 </div>
                 <div class="warn">
@@ -59,7 +76,7 @@
                     <label for="desc">DESCRIPTION</label>
                     <textarea class="filed" name="desc" id="desc" cols="60" rows="8" placeholder="Description of the work you want to commission"></textarea>
                 </div>
-
+                
                 <input id="button" type="submit" value="SUBMIT" name="submit">
             </form>
         </div>
@@ -75,6 +92,8 @@
         var canvaa4 = document.getElementsByClassName('size-a4')[0];
         var a4input = document.getElementsByClassName('input-a4')[0];
         var a3input = document.getElementsByClassName('input-a3')[0];
+        var size_det = document.querySelector('.can-size');
+        var size_opt = document.querySelector('.size-options');
         let warns = document.querySelector('.warn');
         let note = document.querySelector('.notes');
         let img_refer = document.querySelector('.img-refer');
@@ -115,11 +134,18 @@
                 note.style.border = '2px solid red';
                 imgcap.innerHTML = "<u>Sizes for Reference</u>";
                 referimg.src = "images/paper_size.jpeg";
+                canvas.style.display = "flex";
+                size_det.style.display = "none";
+                size_opt.style.display = "block";
+                a4input.removeAttribute('name');
+                a3input.removeAttribute('name');
 
             }
             else if(select.value == "sketch"){
                 
                 canvas.style.display = "flex";
+                size_det.style.display = "flex";
+                size_opt.style.display = "none";
                 warnH.innerHTML = "<b>Note:</b> PRICE = (per square inch) x 3<br>(<i>The prices may vary with the level of details and number of persons in the picture. You will be notified about final price via e-mail</i>)";
                 note.style.border = '2px solid red';
                 imgcap.innerHTML = "<u>Sizes for Reference</u>";
@@ -129,6 +155,8 @@
             else if(select.value == "bw"){
                 
                 canvas.style.display = "flex";
+                size_det.style.display = "flex";
+                size_opt.style.display = "none";
                 warnH.innerHTML = "<b>Note:</b> PRICE = (per square inch) x 2<br>(<i>The prices may vary with the level of details and number of persons in the picture. You will be notified about final price via e-mail</i>)";
                 note.style.border = '2px solid red';
                 imgcap.innerHTML = "<u>Sizes for Reference</u>";
@@ -141,6 +169,11 @@
                 note.style.border = '2px solid red';
                 imgcap.innerHTML = "<u>Sizes for Reference</u>";
                 referimg.src = "images/paper_size.jpeg";
+                canvas.style.display = "flex";
+                size_det.style.display = "none";
+                size_opt.style.display = "block";
+                a4input.removeAttribute('name');
+                a3input.removeAttribute('name');
 
             }   
             warnH.style.textAlign = 'center';
