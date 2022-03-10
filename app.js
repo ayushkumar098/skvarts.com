@@ -351,7 +351,7 @@ app.get("/gallerys/:galleryName",checkcookie, function (req, res) {
           res.render("gallery", { title: gallery.title,subtitle: gallery.subtitle, items: foundItems});
         }
       }
-    }).sort({ priority: -1 });
+    }).sort({ priority: 1 });
   });
 });
 
@@ -365,7 +365,7 @@ app.get("/shops/original",checkcookie, function(req,res){
       if (err) {
         console.log(err);
       } else {
-        res.render("origShop", { title: "Original", items: foundItems });
+        res.render("origShop", { title: "Originals", items: foundItems });
       }
     }).sort({ stock: -1 }).sort({ priority: 1 });
 
@@ -377,7 +377,7 @@ app.get("/shops/print",checkcookie, function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        res.render("printShop", { title: "Print", items: foundItems });
+        res.render("printShop", { title: "Prints", items: foundItems });
       }
     }).sort({ stock: -1 }).sort({ priority: 1 });
   
