@@ -28,10 +28,10 @@
                     <label for="paint-style">PAINTING STYLE</label>
                     <select class="field" name="paint" id="styles" place>
                         <option value="null">--Select Style--</option>
-                        <option value="oil">Oil Painting</option>
-                        <option value="sketch">Color Pencil</option>
-                        <option value="bw">Graphite & Charcoal</option>
-                        <option value="abs">Scenery</option>
+                        <option value="Oil Painting">Oil Painting</option>
+                        <option value="Color Pencil">Color Pencil</option>
+                        <option value="Graphite & Charcoal">Graphite & Charcoal</option>
+                        <option value="Scenery">Scenery</option>
                     </select>
                 </div>
 
@@ -128,7 +128,7 @@
             if (select.value == "null") {
                 canvas.style.display = "none";
             }
-            else if(select.value == "oil"){
+            else if(select.value == "Oil Painting"){
                 
                 warnH.innerHTML = "<b>Note:</b> PRICE = (per square inch) x 5<br>(<i>The prices may vary with the level of details and number of persons in the picture. You will be notified about final price via e-mail</i>)";
                 note.style.border = '2px solid red';
@@ -141,7 +141,7 @@
                 a3input.removeAttribute('name');
 
             }
-            else if(select.value == "sketch"){
+            else if(select.value == "Color Pencil"){
                 
                 canvas.style.display = "flex";
                 size_det.style.display = "flex";
@@ -152,7 +152,7 @@
                 referimg.src = "images/img_wall.jpeg";
 
             }
-            else if(select.value == "bw"){
+            else if(select.value == "Graphite & Charcoal"){
                 
                 canvas.style.display = "flex";
                 size_det.style.display = "flex";
@@ -163,7 +163,7 @@
                 referimg.src = "images/img_wall.jpeg";
 
             }
-            else if(select.value == "abs"){
+            else if(select.value == "Scenery"){
                 
                 warnH.innerHTML = "<b>Note:</b> PRICE = (per square inch) x 4<br>(<i>The prices may vary with the level of details and number of persons in the picture. You will be notified about final price via e-mail</i>)";
                 note.style.border = '2px solid red';
