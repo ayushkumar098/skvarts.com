@@ -28,7 +28,10 @@
                         <% } %>
                     </select>
                     <% } else{ %>
-                        <h3><%= image.priceInfo[0].size %> </h3> 
+                        <h3 style="text-align: left;"><%= image.priceInfo[0].size %> </h3>
+                        <select name="imgSize" id="imgSize" required hidden>
+                            <option value="<%= image.priceInfo[0].size %>"><%= image.priceInfo[0].size %> - C$<%= image.priceInfo[0].price %></option>
+                        </select>
                     <% } %> 
                     <p><%= image.desc %></p>
                 </div>
