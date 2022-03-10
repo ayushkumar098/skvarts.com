@@ -27,7 +27,7 @@
                 <div class="form-input">
                     <label for="paint-style">PAINTING STYLE</label>
                     <select class="field" name="paint" id="styles" place>
-                        <option value="null">--Select Style--</option>
+                        <option value="null" disabled selected>--Select Style--</option>
                         <option value="Oil Painting">Oil Painting</option>
                         <option value="Color Pencil">Color Pencil</option>
                         <option value="Graphite & Charcoal">Graphite & Charcoal</option>
@@ -37,16 +37,13 @@
 
 
                 <div class="form-input CANVAS">
-                    <label for="size">CANVAS SIZE</label>
+                    <label for="size">SIZE</label>
                     <div class="can-size">
-                        <div class="size-details">
-                            <div class="size-a4">A4 <input class="input-a4" type="hidden" name="" value="a4"></div>
-                            <p>(9"x12")</p>
-                        </div>
-                        <div class="size-details">
-                            <div class="size-a3">A3 <input class="input-a3" type="hidden" name="" value="a4"></div>
-                            <p>(11-3/4" x 16-1/4")</p>
-                        </div>
+                        <select class="size-opt" name="selected" id="canvas-size" place>
+                            <option value="null" disabled selected>--Select Size--</option>
+                            <option value="A4">A4 - 9"x12" </option>
+                            <option value="A3">A3 - 11-3/4" x 16-1/4" </option>
+                        </select>
                     </div>
                     <div class="size-options">
                         <select class="sizes" name="selected" id="sizes-drop" place>
@@ -88,10 +85,6 @@
         var select = document.getElementById('styles');
         var canvas = document.getElementsByClassName('CANVAS')[0];
         canvas.style.display = "none";
-        var canvaa3 = document.getElementsByClassName('size-a3')[0];
-        var canvaa4 = document.getElementsByClassName('size-a4')[0];
-        var a4input = document.getElementsByClassName('input-a4')[0];
-        var a3input = document.getElementsByClassName('input-a3')[0];
         var size_det = document.querySelector('.can-size');
         var size_opt = document.querySelector('.size-options');
         let warns = document.querySelector('.warn');
@@ -101,27 +94,6 @@
         let referimg = document.createElement('img');
         let imgcap = document.createElement('h3');
 
-        canvaa3.addEventListener('click', () => {
-            canvaa3.style.borderColor = "#f44336";
-            canvaa3.style.color = "#f44336";
-            canvaa3.style.boxShadow = "3px 3px 1px #f44336";
-            canvaa4.style.borderColor = "black";
-            canvaa4.style.color = "black";
-            canvaa4.style.boxShadow = "none";
-            a3input.setAttribute('name', 'selected');
-            a4input.removeAttribute('name');
-        })
-
-        canvaa4.addEventListener('click', () => {
-            canvaa4.style.borderColor = "#f44336";
-            canvaa4.style.color = "#f44336";
-            canvaa4.style.boxShadow = "3px 3px 1px #f44336";
-            canvaa3.style.borderColor = "black";
-            canvaa3.style.color = "black";
-            canvaa3.style.boxShadow = "none";
-            a4input.setAttribute('name', 'selected');
-            a3input.removeAttribute('name');
-        })
 
         select.addEventListener('change', () => {
             note.style.border = 'none';
@@ -137,8 +109,6 @@
                 canvas.style.display = "flex";
                 size_det.style.display = "none";
                 size_opt.style.display = "block";
-                a4input.removeAttribute('name');
-                a3input.removeAttribute('name');
 
             }
             else if(select.value == "Color Pencil"){
@@ -172,9 +142,6 @@
                 canvas.style.display = "flex";
                 size_det.style.display = "none";
                 size_opt.style.display = "block";
-                a4input.removeAttribute('name');
-                a3input.removeAttribute('name');
-
             }   
             warnH.style.textAlign = 'center';
             imgcap.style.marginBottom = '10px';
