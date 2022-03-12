@@ -485,7 +485,7 @@ app.post("/addToCart",checkcookie,function (req, res) {
 
 });
 
-// ------------CART PAGE-----------
+// ------------CART PAGE-----------//
 
 app.post('/deletefromcart',checkcookie,function(req,res){
   todelete = req.body.id;
@@ -580,6 +580,28 @@ app.post("/verylongandsecureuploadingurlthatisverylong", upload.single("image"),
   }
 );
 
+//-----------updates-------------//
+
+app.get("/galleryUpdate", function (req, res) {
+  res.render("galleryUpdate");
+});
+
+app.post("/galleryUpdate", function(req,res){
+  const field = req.body.field;
+  const name = req.body.name;
+  const newVal = req.body.newVal;
+  var query = {};
+  query[field] = newVal;
+  imgModel.findOneAndUpdate({name: name},query, function(err, foundItem){
+    if(err){
+      console.log(err);
+    }else{
+      // console.log(foundItem.name);
+      res.redirect("galleryUpdate");
+    }
+  })
+})
+
 app.post("/delete", function (req, res) {
   imgModel.deleteOne({ name: req.body.name }, function (err) {
     if (err) {
@@ -667,6 +689,48 @@ app.post("/photoUpload", upload.single("image"), function (req, res, next) {
         res.redirect("/photoUpload?password=skvarts15");
       }
     });
+  }
+  
+});
+
+app.get("/shopUpdate", function (req, res) {
+  res.render("shopUpdate");
+});
+
+app.post("/shopUpdate", function (req, res) {
+  const type = req.body.type;
+  const field = req.body.field;
+  const name = req.body.name;
+  const newVal = req.body.newVal;
+  var query = {};
+  query[field] = newVal;
+
+  if(type == "original"){
+    originalModel.findOneAndUpdate({ name: name },query,function (err, foundItem) {
+        if (err) {
+          console.log(err);
+        } else {
+          // console.log(foundItem.name);
+          res.redirect("shopUpdate");
+        }
+      }
+    );
+  }
+
+
+  if(type == "print"){
+    printModel.findOneAndUpdate(
+      { name: name },
+      query,
+      function (err, foundItem) {
+        if (err) {
+          console.log(err);
+        } else {
+          // console.log(foundItem.name);
+          res.redirect("shopUpdate");
+        }
+      }
+    );
   }
   
 });

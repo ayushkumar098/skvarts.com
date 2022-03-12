@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Shop Image Update</h1>
+
+    <div class="thatClass">
+        <form action="/shopUpdate" method="post">
+            <div>
+                <label for="type">Image Type</label>
+                <select name="type" id="type" required>
+                    <option value="original">Original</option>
+                    <option value="print">Print</option>
+                </select>
+                <br><br>
+                <label for="name">Image Title</label>
+                <input type="text" id="name" placeholder="Name" name="name" required>
+                <br><br>
+                <label for="field">Select the field you want to update</label>
+                <select name="field" id="field">
+                    <option value="name">Name</option>
+                    <option value="priority">Priority</option>
+                    <option value="desc">Description</option>
+                </select>
+                <br><br>
+                <label for="newVal">Enter New Value</label>
+                <input type="text" id="newVal" placeholder="New Value" name="newVal" required>
+            </div>
+            <div>
+                <br>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
