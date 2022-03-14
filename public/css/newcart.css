@@ -175,6 +175,7 @@ nav .fa{
 }
 .items-title{
     margin: 1rem 0;
+    font-weight: 400;
 }
 .cart-orders{
     height: auto;

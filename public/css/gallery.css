@@ -153,6 +153,7 @@ nav .fa{
 
 .gallery-page{
     width: auto;
+    min-height: 100vh;
     padding: 0 10%;
     display: flex;
     flex-direction: column;
@@ -206,6 +207,9 @@ nav .fa{
 }
 
 .photo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #e1dbd6;
     /* border: solid 2px #777; */
     padding: 5%;
