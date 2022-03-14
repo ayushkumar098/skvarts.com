@@ -272,22 +272,34 @@ nav .fa{
     font-size: 1.5rem !important;
 }
 
+@media only screen and (max-width: 840px){
+    .gallery-heading h4{
+        font-size: 4em;
+    }
+    .gallery-heading span{
+        font-size: 1em;
+    }
+}
 @media only screen and (max-width: 769px){
     .container .heading{
         width: 80%;
     }
 
-    .container .heading #title{
-    font-size: 4em;
-    font-family: 'Great Vibes', cursive;
-    }   
-    .container .heading #subtitle{
-    font-size: 2em;
-    } 
+    .gallery-heading h4{
+        font-size: 3em;
+    }
+    .gallery-heading span{
+        font-size: 0.5em;
+    }
    
     .box{
         grid-template-columns: repeat(3, 1fr);
+        
+    }.gallery-heading h4{
+        font-size: 3em;
     }
+    .gallery-heading span{
+        font-size: 0.4em;
 } 
 
 @media only screen and (max-width: 620px){
