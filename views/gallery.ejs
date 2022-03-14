@@ -39,7 +39,34 @@
         <div class="gallery-heading">
             <h4><%= title %> <span><%= subtitle%></span></h4>
         </div>
-        <div class="gallery-content">
+        <div class="box">
+            <% items.forEach(function(image){ %>
+            <div class="frame">
+                <div class="photo">
+                    <a href="data:image/<%=image.img.contentType%>;base64,
+                        <%=image.img.data.toString('base64')%>" data-lightbox="mygallery" data-title="<%= image.name %><br><%= image.size %>">
+                        <img  src="data:image/<%=image.img.contentType%>;base64,
+                         <%=image.img.data.toString('base64')%>">
+                    </a>
+                </div>
+                
+                <div class="info">
+                    <div class="details">
+                        <h4><%= image.name.toUpperCase() %></h4>
+                        
+                    </div>
+                    <h5><%= image.size %></h5>
+
+                    <% if(image.stock <= 0){ %>
+                    <div>
+                        <h4 style="color:red">SOLD</h4>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+        <!-- <div class="gallery-content">
             <div class="col">
                 <% var n = 0 %>
                 <% while(n < items.length){ %>
@@ -62,7 +89,7 @@
                 <div class="col-1"></div>
                 <div class="col-2"></div>
                 <div class="col-3"></div>
-        </div> 
+        </div>  -->
     </section>
 
     <section class="footer">
@@ -99,22 +126,22 @@
         } 
 
         // Tidying up the gallery
-        let photo = document.querySelectorAll('.photo');
-        let col1 = document.querySelector('.col-1');
-        let col2 = document.querySelector('.col-2');
-        let col3 = document.querySelector('.col-3');
-        for(var i=0; i<photo.length; i++){
-            if(i%3 == 0){
-                col1.appendChild(photo[i]);
-            }
-            else if(i%3 == 1){
-                col2.appendChild(photo[i]);
-            }
-            else if(i%3 == 2){
-                col3.appendChild(photo[i]);
-            }
-        }
-        document.querySelector('.col').remove();
+        // let photo = document.querySelectorAll('.photo');
+        // let col1 = document.querySelector('.col-1');
+        // let col2 = document.querySelector('.col-2');
+        // let col3 = document.querySelector('.col-3');
+        // for(var i=0; i<photo.length; i++){
+        //     if(i%3 == 0){
+        //         col1.appendChild(photo[i]);
+        //     }
+        //     else if(i%3 == 1){
+        //         col2.appendChild(photo[i]);
+        //     }
+        //     else if(i%3 == 2){
+        //         col3.appendChild(photo[i]);
+        //     }
+        // }
+        // document.querySelector('.col').remove();
 
     </script>
 </body>
