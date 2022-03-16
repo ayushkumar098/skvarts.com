@@ -232,6 +232,36 @@ nav .fa{
     padding: 0 10px;
     
 }
+
+
+.heading{
+    width: 50%;
+    margin: 50px;
+    color: #f44336;
+}
+
+.heading h3{
+    text-align: center;
+    font-weight: 300;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #f44336;
+    
+}
+
+.heading span{
+    font-size: 3em;
+    font-weight: 600;
+    font-family: 'Lexend Exa';
+    margin-left: 5px;
+}
+
+.heading #title{
+    font-size: 7em;
+    font-weight: 500;
+    font-family: 'PlaylistScript';
+}
+
+
 .info > .details{
     margin-bottom: 10px;
     font-size: x-large;
@@ -239,6 +269,7 @@ nav .fa{
 .info h4, .info h5, .info p{
     color: black;
     font-family: 'Lexend Exa';
+    text-align: center;
 }
 .info h5{
     font-weight: 200;
@@ -272,16 +303,24 @@ nav .fa{
     font-size: 1.5rem !important;
 }
 
+@media only screen and (max-width: 840px){
+    .gallery-heading h4{
+        font-size: 4em;
+    }
+    .gallery-heading span{
+        font-size: 1em;
+    }
+}
 @media only screen and (max-width: 769px){
-    .container .heading{
+    .heading{
         width: 80%;
     }
 
-    .container .heading #title{
+    .heading #title{
     font-size: 4em;
-    font-family: 'Great Vibes', cursive;
+    /* font-family: 'Great Vibes', cursive; */
     }   
-    .container .heading #subtitle{
+    .heading #subtitle{
     font-size: 2em;
     } 
    
